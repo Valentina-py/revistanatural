@@ -84,6 +84,8 @@ h1, h2, h3, blockquote { font-family: var(--font-display); line-height: 1.05; ma
 p { margin: 0 0 1em; }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
+/* Palabras largas (emails, nombres científicos) nunca desbordan en móvil */
+h1, h2, h3, p, a, li, blockquote { overflow-wrap: break-word; }
 
 /* ============================== 3. ANIMACIÓN (scroll reveal) ============================== */
 /* Solo transform + opacity → compositor de GPU, sin reflujo. */
@@ -871,11 +873,22 @@ a { color: inherit; text-decoration: none; }
   .site-footer { grid-template-columns: 1fr; }
 }
 
-/* En móvil: Información práctica (05) y "¿Sabías que?" en UNA sola columna
-   (cada tarjeta como un bloque, una debajo de la otra) */
+/* En MÓVIL (≤768px): TODO en una sola columna, cada bloque debajo del otro */
 @media (max-width: 768px) {
+  .grid-editorial,
+  .flora-list,
   .info-grid,
-  .sabias { grid-template-columns: 1fr; }
+  .sabias,
+  .manifiesto-grid,
+  .sumario,
+  .circuitos,
+  .sopa__layout { grid-template-columns: 1fr !important; }
+
+  .grid-editorial > * { grid-column: auto !important; }
+
+  /* Mosaico de fauna (flex) → 1 por fila, con el detalle visible */
+  .fauna-card { flex-basis: 100% !important; aspect-ratio: auto; min-height: 14rem; }
+  .fauna-card__text { max-height: 8rem; opacity: 1; }
 }
 
 @media (max-width: 560px) {
