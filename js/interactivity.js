@@ -1,0 +1,738 @@
+/* ============================================================================
+   interactivity.js — Orquestador modular (ES6) de la revista.
+   Responsabilidades:
+     · Renderizar contenido desde data.js (fauna, flora, circuitos, etc.)
+     · Filtrado interactivo de circuitos turísticos
+     · Animaciones scroll-driven EFICIENTES (IntersectionObserver + rAF),
+       evitando layout thrashing (solo se animan transform/opacity).
+   Cada bloque es una función init* independiente → fácil de mantener/extender.
+   ========================================================================== */
+
+import {
+  CIRCUITOS, FILTROS, FAUNA, FLORA, CONSERVACION, CONTACTO, CURIOSIDADES,
+  SUMARIO, QUIZ, SABIAS, SOPA_PALABRAS,
+} from './data.js';
+
+/* Pequeño helper para crear elementos con propiedades + hijos. */
+const el = (tag, props = {}, children = []) => {
+  const node = Object.assign(document.createElement(tag), props);
+  for (const child of [].concat(children)) {
+    if (child != null) node.append(child);
+  }
+  return node;
+};
+
+/* ============================ 0. ÍNDICE / SUMARIO ============================ */
+function initSumario() {
+  const cont = document.getElementById('lista-sumario');
+  if (!cont) return;
+
+  const frag = document.createDocumentFragment();
+  for (const s of SUMARIO) {
+    const link = el('a', { className: 'sumario__link', href: s.ancla }, [
+      el('span', { className: 'sumario__num', textContent: s.num, 'aria-hidden': 'true' }),
+      el('span', { className: 'sumario__body' }, [
+        el('h3', { className: 'sumario__name', textContent: s.nombre }),
+        el('p', { className: 'sumario__desc', textContent: s.desc }),
+      ]),
+      el('span', { className: 'sumario__arrow', textContent: '→', 'aria-hidden': 'true' }),
+    ]);
+
+    const item = el('li', { className: 'sumario__item' }, [link]);
+    item.setAttribute('data-reveal', '');
+    frag.append(item);
+  }
+  cont.append(frag);
+}
+
+/* ============================ 1. GALERÍA DE FAUNA ============================ */
+function initFauna() {
+  const cont = document.getElementById('galeria-fauna');
+  if (!cont) return;
+
+  const frag = document.createDocumentFragment();
+  for (const f of FAUNA) {
+    const card = el('figure', {
+      className: 'fauna-card' + (f.destacado ? ' fauna-card--destacado' : ''),
+    });
+
+    // Imagen con lazy loading nativo (rendimiento). Si falla, queda el degradado CSS.
+    const img = el('img', {
+      className: 'fauna-card__img',
+      src: f.img,
+      alt: `${f.nombre} (${f.cientifico})`,
+      loading: 'lazy',
+      decoding: 'async',
+    });
+    img.addEventListener('error', () => img.remove(), { once: true });
+
+    const badge = el('span', {
+      className: 'fauna-card__badge',
+      textContent: `${f.emoji} ${f.grupo}`,
+    });
+
+    const body = el('figcaption', { className: 'fauna-card__body' }, [
+      el('h3', { className: 'fauna-card__name', textContent: f.nombre }),
+      el('span', { className: 'fauna-card__sci', textContent: f.cientifico }),
+      el('p', { className: 'fauna-card__text', textContent: f.texto }),
+    ]);
+
+    card.append(img, badge, body);
+    card.setAttribute('data-reveal', '');
+    frag.append(card);
+  }
+  cont.append(frag);
+}
+
+/* ============================ 2. LISTA DE FLORA ============================ */
+function initFlora() {
+  const cont = document.getElementById('lista-flora');
+  if (!cont) return;
+
+  const frag = document.createDocumentFragment();
+  FLORA.forEach((planta, i) => {
+    // Cabecera con FOTO real del árbol + emoji y etiqueta superpuestos.
+    const lamina = el('div', { className: 'flora-item__lamina' }, [
+      el('span', { className: 'flora-item__emoji', textContent: planta.emoji }),
+      el('span', { className: 'flora-item__habito', textContent: planta.habito }),
+    ]);
+    lamina.dataset.acento = String(i % 4); // color de respaldo si falta la foto
+
+    if (planta.img) {
+      const foto = el('img', {
+        className: 'flora-item__foto',
+        src: planta.img,
+        alt: `${planta.nombre} (${planta.cientifico})`,
+        loading: 'lazy',
+        decoding: 'async',
+      });
+      foto.addEventListener('error', () => foto.remove(), { once: true });
+      lamina.prepend(foto);
+    }
+
+    const ficha = el('div', { className: 'flora-item__ficha' }, [
+      el('h3', { textContent: planta.nombre }),
+      el('span', { className: 'sci', textContent: planta.cientifico }),
+      el('p', { textContent: planta.uso }),
+    ]);
+
+    const item = el('li', { className: 'flora-item' }, [lamina, ficha]);
+    item.setAttribute('data-reveal', '');
+    frag.append(item);
+  });
+  cont.append(frag);
+}
+
+/* ===================== 3. CIRCUITOS TURÍSTICOS + FILTRADO ===================== */
+function initCircuitos() {
+  const filtrosCont = document.getElementById('filtros-circuitos');
+  const listaCont = document.getElementById('lista-circuitos');
+  if (!filtrosCont || !listaCont) return;
+
+  // --- 3a. Render de las tarjetas de circuito ---
+  const tarjetas = CIRCUITOS.map((c) => {
+    const card = el('article', { className: 'circuito-card' });
+    card.dataset.acento = c.acento;
+    // Guardamos las categorías para filtrar sin volver a tocar el DOM/data.
+    card.dataset.cats = c.categorias.join(' ');
+
+    // Imagen de cabecera con lazy loading; si falla, queda el color de acento.
+    const foto = el('div', { className: 'circuito-card__foto' });
+    if (c.img) {
+      const cimg = el('img', {
+        src: c.img, alt: c.titulo, loading: 'lazy', decoding: 'async',
+      });
+      cimg.addEventListener('error', () => cimg.remove(), { once: true });
+      foto.append(cimg);
+    }
+    foto.append(el('span', { className: 'circuito-card__emoji', textContent: c.emoji || '' }));
+
+    const top = el('header', { className: 'circuito-card__top' }, [
+      el('span', { className: 'circuito-card__etiqueta', textContent: c.etiqueta }),
+      el('h3', { className: 'circuito-card__titulo', textContent: c.titulo }),
+      el('p', { className: 'circuito-card__rios', textContent: c.rios }),
+    ]);
+
+    const acts = el('ul', { className: 'circuito-card__acts' },
+      c.actividades.map((a) => el('li', { textContent: a })));
+
+    const body = el('div', { className: 'circuito-card__body' }, [
+      el('p', { className: 'circuito-card__resumen', textContent: c.resumen }),
+      acts,
+      el('p', { className: 'circuito-card__nota', textContent: c.nota }),
+    ]);
+
+    card.append(foto, top, body);
+    card.setAttribute('data-reveal', '');
+    listaCont.append(card);
+    return card;
+  });
+
+  // Mensaje para resultados vacíos (oculto por defecto).
+  const vacio = el('p', {
+    className: 'circuitos__vacio',
+    textContent: 'No hay circuitos para este filtro.',
+    hidden: true,
+  });
+  listaCont.append(vacio);
+
+  // --- 3b. Lógica de filtrado ---
+  let activo = 'todos';
+
+  const aplicarFiltro = (filtro) => {
+    activo = filtro;
+    let visibles = 0;
+
+    tarjetas.forEach((card) => {
+      const cats = card.dataset.cats.split(' ');
+      const coincide = filtro === 'todos' || cats.includes(filtro);
+
+      if (coincide) {
+        // Fade-in escalonado: mostramos y, en el siguiente frame, animamos.
+        card.classList.remove('is-hidden');
+        card.classList.add('is-filtering');
+        requestAnimationFrame(() => card.classList.remove('is-filtering'));
+        visibles++;
+      } else {
+        card.classList.add('is-hidden');
+      }
+    });
+
+    vacio.hidden = visibles > 0;
+  };
+
+  // --- 3c. Render de los botones de filtro ---
+  FILTROS.forEach((f, i) => {
+    const btn = el('button', {
+      className: 'filtro-btn',
+      type: 'button',
+      textContent: f.nombre,
+    });
+    btn.setAttribute('aria-pressed', String(i === 0)); // "Todos" activo al inicio
+
+    btn.addEventListener('click', () => {
+      filtrosCont.querySelectorAll('.filtro-btn')
+        .forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+      aplicarFiltro(f.id);
+    });
+
+    filtrosCont.append(btn);
+  });
+}
+
+/* ===================== 4. MANIFIESTO DE CONSERVACIÓN ===================== */
+function initConservacion() {
+  const cont = document.getElementById('lista-conservacion');
+  if (!cont) return;
+
+  const frag = document.createDocumentFragment();
+  for (const accion of CONSERVACION) {
+    const item = el('article', { className: 'manifiesto-item' }, [
+      el('span', { className: 'manifiesto-item__icono', textContent: accion.icono }),
+      el('h3', { textContent: accion.titulo }),
+      el('p', { textContent: accion.texto }),
+    ]);
+    item.setAttribute('data-reveal', '');
+    frag.append(item);
+  }
+  cont.append(frag);
+}
+
+/* ============================ 5. CONTACTO (footer) ============================ */
+function initContacto() {
+  const cont = document.getElementById('bloque-contacto');
+  if (!cont) return;
+
+  cont.append(
+    el('h3', { textContent: CONTACTO.oficina }),
+    el('p', { textContent: CONTACTO.direccion }),
+    el('p', {}, [el('a', { href: `mailto:${CONTACTO.email}`, textContent: CONTACTO.email })]),
+    el('p', {}, [el('a', { href: `tel:${CONTACTO.telefono.replace(/\s/g, '')}`, textContent: CONTACTO.telefono })]),
+  );
+}
+
+/* ============================ 5b. TICKER DE CURIOSIDADES ============================ */
+function initTicker() {
+  const track = document.getElementById('ticker');
+  if (!track) return;
+  // Duplicamos la lista para un loop continuo sin cortes.
+  const items = [...CURIOSIDADES, ...CURIOSIDADES];
+  for (const txt of items) {
+    track.append(el('span', { className: 'ticker__item', textContent: txt }));
+  }
+}
+
+/* ============================ 5c. CONTADOR ANIMADO ============================ */
+function initCountUp() {
+  const nums = document.querySelectorAll('[data-countup]');
+  if (!nums.length || !('IntersectionObserver' in window)) return;
+
+  const animar = (node) => {
+    const fin = Number(node.dataset.countup) || 0;
+    const dur = 1200;
+    let inicio = null;
+    const paso = (t) => {
+      if (inicio === null) inicio = t;
+      const p = Math.min((t - inicio) / dur, 1);
+      // easeOutCubic
+      const val = Math.round(fin * (1 - Math.pow(1 - p, 3)));
+      node.textContent = val;
+      if (p < 1) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  };
+
+  const io = new IntersectionObserver((entries, obs) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { animar(e.target); obs.unobserve(e.target); }
+    }
+  }, { threshold: 0.6 });
+  nums.forEach((n) => io.observe(n));
+}
+
+/* ============================ 5e. TRIVIA / QUIZ ============================ */
+function initQuiz() {
+  const cont = document.getElementById('quiz');
+  if (!cont) return;
+
+  const bodyEl     = document.getElementById('quiz-body');
+  const scoreEl    = document.getElementById('quiz-score');
+  const progressEl = document.getElementById('quiz-progress');
+  const feedbackEl = document.getElementById('quiz-feedback');
+  const nextBtn    = document.getElementById('quiz-next');
+  const restartBtn = document.getElementById('quiz-restart');
+  if (!bodyEl || !scoreEl || !nextBtn || !restartBtn) return;
+
+  const total = QUIZ.length;
+  let indice = 0;       // pregunta actual
+  let aciertos = 0;     // puntaje
+  let respondida = false;
+
+  const actualizarMarcador = () => {
+    scoreEl.textContent = `${aciertos} / ${total}`;
+    const ratio = total > 0 ? (indice / total) : 0;
+    if (progressEl) progressEl.style.transform = `scaleX(${ratio})`;
+  };
+
+  // Renderiza la pregunta `indice`.
+  const pintarPregunta = () => {
+    respondida = false;
+    feedbackEl.textContent = '';
+    feedbackEl.className = 'quiz__feedback';
+    nextBtn.hidden = true;
+    restartBtn.hidden = true;
+
+    const q = QUIZ[indice];
+    bodyEl.textContent = '';
+
+    const cabecera = el('p', {
+      className: 'quiz__count',
+      textContent: `Pregunta ${indice + 1} de ${total}`,
+    });
+    const pregunta = el('h3', { className: 'quiz__question', textContent: q.pregunta });
+
+    const lista = el('div', { className: 'quiz__options', role: 'group' });
+    lista.setAttribute('aria-label', q.pregunta);
+
+    q.opciones.forEach((texto, i) => {
+      const btn = el('button', {
+        type: 'button',
+        className: 'quiz__option',
+        textContent: texto,
+      });
+      btn.addEventListener('click', () => elegir(i, lista));
+      lista.append(btn);
+    });
+
+    bodyEl.append(cabecera, pregunta, lista);
+    actualizarMarcador();
+  };
+
+  // Maneja la elección de una opción.
+  const elegir = (i, lista) => {
+    if (respondida) return;      // una sola respuesta por pregunta
+    respondida = true;
+
+    const q = QUIZ[indice];
+    const botones = [...lista.querySelectorAll('.quiz__option')];
+    const acierto = i === q.correcta;
+    if (acierto) aciertos++;
+
+    botones.forEach((b, idx) => {
+      b.disabled = true;
+      if (idx === q.correcta) b.classList.add('is-correct');
+      else if (idx === i) b.classList.add('is-wrong');
+    });
+
+    feedbackEl.classList.add(acierto ? 'is-ok' : 'is-bad');
+    feedbackEl.textContent = acierto
+      ? `¡Correcto! ${q.explicacion}`
+      : `Casi… ${q.explicacion}`;
+
+    actualizarMarcador();
+
+    const ultima = indice === total - 1;
+    nextBtn.hidden = ultima;
+    restartBtn.hidden = !ultima;
+    if (ultima) {
+      const cierre = aciertos === total
+        ? '¡Sabés todo sobre Orán! 🌿'
+        : `Terminaste con ${aciertos} de ${total}. ¡Volvé a intentarlo!`;
+      feedbackEl.textContent += ` ${cierre}`;
+      restartBtn.focus();
+    } else {
+      nextBtn.focus();
+    }
+  };
+
+  nextBtn.addEventListener('click', () => {
+    if (indice < total - 1) { indice++; pintarPregunta(); }
+  });
+
+  restartBtn.addEventListener('click', () => {
+    indice = 0;
+    aciertos = 0;
+    pintarPregunta();
+  });
+
+  // ¿Sabías que…?
+  const sabiasCont = document.getElementById('sabias-list');
+  if (sabiasCont && Array.isArray(SABIAS)) {
+    const frag = document.createDocumentFragment();
+    for (const dato of SABIAS) {
+      const li = el('li', { className: 'sabias__item' }, [
+        el('span', { className: 'sabias__emoji', textContent: dato.emoji, 'aria-hidden': 'true' }),
+        el('p', { className: 'sabias__text', textContent: dato.texto }),
+      ]);
+      li.setAttribute('data-reveal', '');
+      frag.append(li);
+    }
+    sabiasCont.append(frag);
+  }
+
+  pintarPregunta();
+}
+
+/* ============================ 5d. IMPRIMIR REVISTA ============================ */
+function initPrint() {
+  const btn = document.getElementById('btn-print');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    // Aseguramos que todo el contenido esté revelado antes de imprimir
+    // (por si el usuario imprime sin haber hecho scroll).
+    document.querySelectorAll('[data-reveal]')
+      .forEach((n) => n.classList.add('is-visible'));
+    window.print();
+  });
+}
+
+/* ============== 6. SCROLL REVEAL (IntersectionObserver, sin reflow) ============== */
+function initScrollReveal() {
+  const targets = document.querySelectorAll('[data-reveal]');
+  if (!targets.length) return;
+
+  // Fallback: si no hay soporte, mostramos todo.
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach((t) => t.classList.add('is-visible'));
+    return;
+  }
+
+  const io = new IntersectionObserver((entries, obs) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target); // una sola vez → menos trabajo
+      }
+    }
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.15 });
+
+  targets.forEach((t) => io.observe(t));
+}
+
+/* ============== 7. PARALLAX HERO + BARRA DE PROGRESO (rAF, GPU only) ============== */
+function initScrollEffects() {
+  const media = document.querySelector('[data-parallax]');
+  const progress = document.getElementById('progress');
+  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let ticking = false;
+
+  const onScroll = () => {
+    // rAF agrupa lecturas/escrituras en un único frame → evita layout thrashing.
+    if (ticking) return;
+    ticking = true;
+
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+
+      // Barra de progreso: escala horizontal (no toca el layout).
+      if (progress) {
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - doc.clientHeight;
+        const ratio = max > 0 ? y / max : 0;
+        progress.style.transform = `scaleX(${ratio})`;
+      }
+
+      // Parallax del hero: solo translateY (compositor de GPU).
+      if (media && !reducido && y < window.innerHeight) {
+        media.style.transform = `translate3d(0, ${y * 0.35}px, 0)`;
+      }
+
+      ticking = false;
+    });
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // estado inicial
+}
+
+/* ============================ 7b. SOPA DE LETRAS ============================ */
+function initSopa() {
+  const gridEl = document.getElementById('sopa-grid');
+  const wordsEl = document.getElementById('sopa-words');
+  if (!gridEl || !wordsEl || !Array.isArray(SOPA_PALABRAS)) return;
+
+  const SIZE = 16;
+  const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÑ';
+  const DIRS = [[0, 1], [1, 0], [1, 1], [-1, 1], [0, -1], [-1, 0], [-1, -1], [1, -1]];
+  const rnd = (n) => Math.floor(Math.random() * n);
+
+  // Normaliza para el tablero: mayúsculas, sin espacios ni acentos (conserva la Ñ).
+  const norm = (s) => s.toUpperCase()
+    .replace(/Á/g, 'A').replace(/É/g, 'E').replace(/Í/g, 'I')
+    .replace(/Ó/g, 'O').replace(/Ú/g, 'U').replace(/Ü/g, 'U')
+    .replace(/[^A-ZÑ]/g, '');
+
+  const palabras = SOPA_PALABRAS.map((p) => ({ display: p, norm: norm(p) }));
+  const encontradas = new Set();
+  const foundEl = document.getElementById('sopa-found');
+  const totalEl = document.getElementById('sopa-total');
+  const winEl = document.getElementById('sopa-win');
+  if (totalEl) totalEl.textContent = palabras.length;
+
+  let grid;
+
+  // --- Generación: coloca las palabras (las largas primero) con reintentos ---
+  function generar() {
+    for (let intento = 0; intento < 80; intento++) {
+      grid = Array.from({ length: SIZE }, () => Array(SIZE).fill(''));
+      const ordenadas = [...palabras].sort((a, b) => b.norm.length - a.norm.length);
+      let fallo = false;
+
+      for (const w of ordenadas) {
+        let ok = false;
+        for (let t = 0; t < 600 && !ok; t++) {
+          const d = DIRS[rnd(DIRS.length)];
+          const len = w.norm.length;
+          const r = rnd(SIZE), c = rnd(SIZE);
+          const er = r + d[0] * (len - 1), ec = c + d[1] * (len - 1);
+          if (er < 0 || er >= SIZE || ec < 0 || ec >= SIZE) continue;
+
+          let cabe = true; const celdas = [];
+          for (let i = 0; i < len; i++) {
+            const rr = r + d[0] * i, cc = c + d[1] * i, cur = grid[rr][cc];
+            if (cur && cur !== w.norm[i]) { cabe = false; break; } // choca con otra letra
+            celdas.push([rr, cc]);
+          }
+          if (!cabe) continue;
+
+          celdas.forEach(([rr, cc], i) => { grid[rr][cc] = w.norm[i]; });
+          ok = true;
+        }
+        if (!ok) { fallo = true; break; }
+      }
+      if (!fallo) return true; // todas colocadas
+    }
+    return false;
+  }
+
+  const celdaDe = (r, c) =>
+    gridEl.querySelector(`.sopa__cell[data-r="${r}"][data-c="${c}"]`);
+
+  // --- Render del tablero y la lista ---
+  function render() {
+    for (let r = 0; r < SIZE; r++)
+      for (let c = 0; c < SIZE; c++)
+        if (!grid[r][c]) grid[r][c] = ALPHABET[rnd(ALPHABET.length)]; // relleno
+
+    gridEl.style.setProperty('--sopa-cols', SIZE);
+    gridEl.innerHTML = '';
+    for (let r = 0; r < SIZE; r++) {
+      for (let c = 0; c < SIZE; c++) {
+        const cell = el('button', { className: 'sopa__cell', type: 'button', textContent: grid[r][c] });
+        cell.dataset.r = r; cell.dataset.c = c;
+        gridEl.append(cell);
+      }
+    }
+
+    wordsEl.innerHTML = '';
+    palabras.forEach((w) => {
+      const li = el('li', { className: 'sopa__word', textContent: w.display });
+      li.dataset.norm = w.norm;
+      wordsEl.append(li);
+    });
+
+    encontradas.clear();
+    progreso();
+  }
+
+  function progreso() {
+    if (foundEl) foundEl.textContent = encontradas.size;
+    if (winEl) winEl.hidden = encontradas.size < palabras.length;
+  }
+
+  // --- Selección por arrastre (líneas rectas en 8 direcciones) ---
+  let inicio = null, seleccion = [];
+  const limpiar = () => { seleccion.forEach((x) => x.classList.remove('is-sel')); seleccion = []; };
+
+  function camino(r0, c0, r1, c1) {
+    const dr = r1 - r0, dc = c1 - c0;
+    const recto = dr === 0 || dc === 0 || Math.abs(dr) === Math.abs(dc);
+    if (!recto) return null;
+    const len = Math.max(Math.abs(dr), Math.abs(dc));
+    const sr = Math.sign(dr), sc = Math.sign(dc);
+    const celdas = [];
+    for (let i = 0; i <= len; i++) celdas.push([r0 + sr * i, c0 + sc * i]);
+    return celdas;
+  }
+
+  function pintar(celdas) {
+    limpiar();
+    celdas.forEach(([r, c]) => {
+      const cel = celdaDe(r, c);
+      if (cel) { cel.classList.add('is-sel'); seleccion.push(cel); }
+    });
+  }
+
+  function evaluar(celdas) {
+    const letras = celdas.map(([r, c]) => grid[r][c]).join('');
+    const rev = [...letras].reverse().join('');
+    for (const w of palabras) {
+      if (encontradas.has(w.norm)) continue;
+      if (w.norm === letras || w.norm === rev) {
+        encontradas.add(w.norm);
+        celdas.forEach(([r, c]) => celdaDe(r, c)?.classList.add('is-found'));
+        wordsEl.querySelector(`.sopa__word[data-norm="${w.norm}"]`)?.classList.add('is-found');
+        progreso();
+        return;
+      }
+    }
+  }
+
+  const celdaEnPunto = (x, y) => {
+    const t = document.elementFromPoint(x, y);
+    return t && t.classList.contains('sopa__cell') ? t : null;
+  };
+
+  gridEl.addEventListener('pointerdown', (e) => {
+    const cell = e.target.closest('.sopa__cell');
+    if (!cell) return;
+    e.preventDefault();
+    inicio = [+cell.dataset.r, +cell.dataset.c];
+    pintar([inicio]);
+  });
+  gridEl.addEventListener('pointermove', (e) => {
+    if (!inicio) return;
+    const cell = celdaEnPunto(e.clientX, e.clientY);
+    if (!cell) return;
+    const ruta = camino(inicio[0], inicio[1], +cell.dataset.r, +cell.dataset.c);
+    if (ruta) pintar(ruta);
+  });
+  const terminar = (e) => {
+    if (!inicio) return;
+    const cell = celdaEnPunto(e.clientX, e.clientY);
+    if (cell) {
+      const ruta = camino(inicio[0], inicio[1], +cell.dataset.r, +cell.dataset.c);
+      if (ruta) evaluar(ruta);
+    }
+    limpiar();
+    inicio = null;
+  };
+  gridEl.addEventListener('pointerup', terminar);
+  gridEl.addEventListener('pointercancel', () => { limpiar(); inicio = null; });
+
+  const reset = document.getElementById('sopa-reset');
+  if (reset) reset.addEventListener('click', () => { if (generar()) render(); });
+
+  if (generar()) render();
+  else gridEl.textContent = 'No se pudo generar la sopa; recargá la página.';
+}
+
+/* ============== 8. CURSOR QUE SIGUE AL MOUSE (lerp + rAF, GPU only) ============== */
+function initCursor() {
+  // Solo en dispositivos con puntero fino y si no se pidió menos movimiento.
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // Ocultamos el puntero nativo y lo reemplazamos por uno propio (punto + anillo).
+  document.documentElement.classList.add('has-cursor');
+
+  const ring = el('div', { className: 'cursor cursor--ring' });
+  const dot  = el('div', { className: 'cursor cursor--dot' });
+  document.body.append(ring, dot);
+
+  let mx = window.innerWidth / 2, my = window.innerHeight / 2; // objetivo (mouse)
+  let rx = mx, ry = my;                                        // posición del anillo
+  let raf = null;
+
+  const loop = () => {
+    // Interpolación: el anillo "persigue" al punto con suavidad.
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+    if (Math.abs(mx - rx) > 0.4 || Math.abs(my - ry) > 0.4) {
+      raf = requestAnimationFrame(loop);
+    } else {
+      raf = null; // se detiene al alcanzar al mouse → no malgasta frames
+    }
+  };
+
+  window.addEventListener('mousemove', (e) => {
+    mx = e.clientX; my = e.clientY;
+    // El punto sigue al mouse al instante; el anillo lo persigue con retardo.
+    dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+    ring.classList.add('is-on');
+    dot.classList.add('is-on');
+    if (!raf) raf = requestAnimationFrame(loop);
+  }, { passive: true });
+
+  // Al salir de la ventana, ocultamos el cursor propio.
+  document.addEventListener('mouseleave', () => {
+    ring.classList.remove('is-on'); dot.classList.remove('is-on');
+  });
+
+  // Crece al pasar sobre elementos interactivos (delegación → cubre lo dinámico).
+  const sel = 'a, button, .fauna-card, .circuito-card, .flora-item, .filtro-btn, .sumario__link';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(sel)) ring.classList.add('is-active');
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(sel)) ring.classList.remove('is-active');
+  });
+}
+
+/* ============================ ARRANQUE ============================ */
+function init() {
+  initSumario();
+  initFauna();
+  initFlora();
+  initCircuitos();
+  initConservacion();
+  initContacto();
+  initTicker();
+  initCountUp();
+  initQuiz();
+  initSopa();
+  initPrint();
+  // Los efectos de scroll y el cursor se enganchan tras poblar el DOM.
+  initScrollReveal();
+  initScrollEffects();
+  initCursor();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init, { once: true });
+} else {
+  init();
+}

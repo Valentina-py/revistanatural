@@ -1,0 +1,214 @@
+/* ============================================================================
+   print.css — Edición IMPRESA de la revista "Orán Natural".
+   Convierte la web interactiva en una revista paginada lista para imprimir
+   o exportar a PDF (Ctrl+P → "Guardar como PDF").
+   Se carga solo en impresión:  <link rel="stylesheet" media="print" ...>
+   Objetivo editorial: A4, márgenes de revista, cada sección en su página,
+   sin elementos interactivos, con los colores e imágenes preservados.
+   ========================================================================== */
+
+@media print {
+
+  /* ---- Página A4 con numeración tipo revista ---- */
+  @page {
+    size: A4;
+    margin: 16mm 14mm;
+  }
+  @page {
+    @bottom-center {
+      content: "Orán Natural · Revista de las Yungas salteñas";
+      font-size: 8pt;
+      color: #555;
+    }
+    @bottom-right {
+      content: "Pág. " counter(page);
+      font-size: 8pt;
+      color: #555;
+    }
+  }
+
+  /* ---- Reglas globales de impresión ---- */
+  :root { --pad-section: 0; }
+
+  html, body {
+    background: #fff !important;
+    color: #1b1a16 !important;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  /* Forzar la impresión de colores e imágenes de fondo (clave en revistas). */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* ---- Ocultar todo lo interactivo / decorativo ---- */
+  .site-header,
+  .progress-bar,
+  .print-btn,
+  .cursor,
+  .hero__floaties,
+  .ticker,
+  .hero__scroll,
+  .filtros,
+  .nav,
+  .circuitos__vacio {
+    display: none !important;
+  }
+
+  /* Sin animaciones al imprimir */
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  /* ---- PORTADA de la revista ---- */
+  .hero {
+    min-height: auto;
+    height: 90vh;                 /* portada a página completa */
+    page-break-after: always;
+    color: #fff !important;
+    display: flex;
+    align-items: flex-end;
+  }
+  .hero__title { font-size: 42pt; }
+  .hero__title em { -webkit-text-fill-color: #cfe88a; color: #cfe88a !important; }
+  .hero__lead { font-size: 13pt; }
+
+  /* ---- Cada sección arranca en página nueva ---- */
+  .section {
+    page-break-before: always;
+    padding: 0 !important;
+  }
+  /* Restablece colores legibles en secciones que en pantalla son oscuras */
+  .section--dark,
+  .section--manifiesto {
+    background: #fff !important;
+    color: #1b1a16 !important;
+  }
+  .section--dark .section__intro,
+  .section--manifiesto .section__intro { color: #54514a !important; }
+  .section--manifiesto .manifiesto-item h3 { color: #2f5d3a !important; }
+  .section--manifiesto .manifiesto-item p { color: #1b1a16 !important; }
+
+  .section__title { font-size: 26pt; }
+  .section__index { color: #b1502f !important; }
+
+  /* ---- Evitar que las tarjetas se partan entre páginas ---- */
+  .card-text, .card-stat, .card-quote,
+  .fauna-card, .flora-item, .circuito-card, .manifiesto-item,
+  .flora-banner, figure, blockquote {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* ---- Grillas: simplificadas para hoja impresa ---- */
+  .grid-editorial > * { grid-column: auto !important; }
+
+  /* Mosaico (flex): 2 por fila en papel, todas del mismo tamaño */
+  .mosaico { justify-content: center; }
+  .fauna-card, .fauna-card--destacado {
+    flex: 0 0 calc((100% - var(--gap)) / 2) !important;
+    aspect-ratio: 4 / 3;
+    height: auto;
+  }
+  /* En papel mostramos siempre el texto de cada especie */
+  .fauna-card__text { max-height: 8rem !important; opacity: 1 !important; }
+
+  /* Circuitos: TODOS visibles aunque el filtro estuviera activo */
+  .circuito-card.is-hidden { display: flex !important; }
+  .circuitos { grid-template-columns: repeat(2, 1fr); }
+
+  .manifiesto-grid { grid-template-columns: repeat(3, 1fr); }
+  .manifiesto-item {
+    background: #eef3e3 !important;
+    border: 1px solid #cfe0b0 !important;
+  }
+  .manifiesto-item p { color: #1b1a16 !important; }
+
+  /* ---- Índice / Sumario: a 2 columnas, sin cortes ---- */
+  .sumario {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6mm;
+  }
+  .sumario__link {
+    background: #fff !important;
+    border: 1px solid #d9d2bf !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .sumario__num { color: #2f5d3a !important; }
+  .sumario__name { color: #14342a !important; }
+  .sumario__arrow { display: none !important; }
+
+  /* ---- Información práctica: cada tarjeta entera, grilla a 2 columnas ---- */
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-auto-rows: auto !important;
+  }
+  .info-card,
+  .info-card--contacto {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    background: #f3efe2 !important;
+    border: 1px solid #d9cfb6 !important;
+    border-top: 3px solid #2f5d3a !important;
+  }
+  .info-card--contacto {
+    grid-column: 1 / -1 !important;
+    display: block !important;
+  }
+  .info-card__titulo { color: #14342a !important; }
+  .info-card__alerta { color: #b1502f !important; background: #f6e7e0 !important; }
+  .info-card__mapa { margin-top: 0.6rem !important; max-height: 8cm; }
+  .info-card__mapa img { height: auto !important; }
+
+  /* ---- Imágenes nítidas y contenidas ---- */
+  img { max-width: 100% !important; }
+
+  /* ---- Pie de revista ---- */
+  .site-footer {
+    page-break-before: always;
+    background: #14342a !important;
+    color: #fff !important;
+  }
+
+  /* Links: mostrar la URL no aporta en esta revista → se omite */
+  a[href]::after { content: ""; }
+}
+
+/* ============================== IMPRESIÓN — ENTRETENIMIENTO ============================== */
+@media print {
+  /* Mostrar todo el contenido revelado por scroll */
+  #entretenimiento [data-reveal] { opacity: 1 !important; transform: none !important; }
+
+  /* La tarjeta del quiz no debe cortarse a mitad */
+  .quiz { box-shadow: none; border: 1px solid #000; break-inside: avoid; }
+
+  /* En papel ocultamos marcador, feedback dinámico y controles */
+  .quiz__scorecard,
+  .quiz__feedback,
+  .quiz__controls { display: none !important; }
+
+  .quiz__options { display: block; }
+  .quiz__option {
+    border: 1px solid #999 !important;
+    background: #fff !important;
+    color: #000 !important;
+    margin-bottom: 0.3rem;
+  }
+  .quiz__option.is-correct { border: 2px solid #000 !important; font-weight: 700; }
+  .quiz__option.is-correct::after { content: " ✓ (correcta)"; }
+  .quiz__option.is-wrong::after { content: ""; }
+
+  .sabias__item { break-inside: avoid; border-left: 3px solid #000; }
+  #entretenimiento { break-before: page; }
+
+  /* Sopa de letras: como pasatiempo impreso, entera y sin el botón */
+  .sopa { break-inside: avoid; box-shadow: none; border: 1px solid #000; }
+  .sopa__reset { display: none !important; }
+  .sopa__cell { border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
+  .sopa__cell.is-found { background: #cfe0b0 !important; }
+}

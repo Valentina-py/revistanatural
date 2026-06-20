@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Revista interactiva de turismo y naturaleza de San Ramón de la Nueva Orán, Salta: Yungas, ríos, biodiversidad y circuitos turísticos." />
+  <title>Orán Natural · Revista de las Yungas salteñas</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+  <!-- Tipografías expresivas: Fraunces (display editorial) + Inter (texto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/main.css" />
+  <!-- Edición impresa: se aplica solo al imprimir / exportar a PDF -->
+  <link rel="stylesheet" href="css/print.css" media="print" />
+</head>
+
+<body>
+  <!-- Barra de progreso de lectura (scroll-driven) -->
+  <div class="progress-bar" id="progress" aria-hidden="true"></div>
+
+  <!-- Botón para imprimir / guardar como PDF (revista) -->
+  <button class="print-btn" id="btn-print" type="button"
+    title="Imprimir o guardar como PDF">🖨️ Imprimir revista</button>
+
+  <!-- ======================= NAVEGACIÓN ======================= -->
+  <header class="site-header" id="top">
+    <!-- Logo institucional (SVG inline): emblema de las Yungas + wordmark -->
+    <a class="logo-inst" href="#top" aria-label="Orán Natural — inicio">
+      <svg class="logo-inst__svg" viewBox="0 0 300 96" role="img"
+           aria-labelledby="logoTitle logoDesc" focusable="false">
+        <title id="logoTitle">Orán — Naturaleza que nos une</title>
+        <desc id="logoDesc">Emblema de las Yungas: sol dorado, montañas de selva, una hoja y un río.</desc>
+        <g class="logo-inst__mark">
+          <circle cx="48" cy="48" r="44" fill="#f6f1e4"/>
+          <circle cx="48" cy="48" r="44" fill="none" stroke="#14342a" stroke-width="3"/>
+          <clipPath id="logoClip"><circle cx="48" cy="48" r="40.5"/></clipPath>
+          <g clip-path="url(#logoClip)">
+            <rect x="6" y="6" width="84" height="84" fill="#f6f1e4"/>
+            <circle cx="48" cy="34" r="13" fill="#e3a516"/>
+            <path d="M6 64 L26 40 L42 60 L60 36 L78 58 L90 46 L90 90 L6 90 Z" fill="#14342a"/>
+            <path d="M6 74 L24 54 L40 72 L58 50 L74 70 L90 58 L90 90 L6 90 Z" fill="#2f5d3a"/>
+            <path d="M6 84 Q30 76 48 84 T90 84 L90 92 L6 92 Z" fill="#1f8a8a"/>
+          </g>
+          <g transform="translate(70 60)">
+            <path d="M0 14 C2 4 12 -4 22 -2 C20 8 12 16 0 14 Z" fill="#9bc24a"/>
+            <path d="M2 12 C8 8 14 4 20 0" fill="none" stroke="#2f5d3a"
+                  stroke-width="1.4" stroke-linecap="round"/>
+          </g>
+        </g>
+        <g class="logo-inst__type">
+          <text x="104" y="46" font-family="'Fraunces', Georgia, serif"
+                font-weight="900" font-size="34" letter-spacing="0.5" fill="#14342a">Orán</text>
+          <rect x="105" y="54" width="86" height="3.2" rx="1.6" fill="#e3a516"/>
+          <text x="105" y="74" font-family="'Inter', system-ui, sans-serif"
+                font-weight="600" font-size="9.5" letter-spacing="2.6"
+                fill="#54514a">NATURALEZA QUE NOS UNE</text>
+        </g>
+      </svg>
+    </a>
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="#indice">Índice</a>
+      <a href="#geografia">Territorio</a>
+      <a href="#biodiversidad">Fauna</a>
+      <a href="#circuitos">Circuitos</a>
+      <a href="#info">Info</a>
+      <a href="#entretenimiento">Juegos</a>
+      <a href="#conservacion">Conservación</a>
+      <a href="#contacto" class="nav__cta">Visitá Orán</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ======================= PORTADA / HERO ======================= -->
+    <section class="hero" id="hero">
+      <div class="hero__media" data-parallax aria-hidden="true"></div>
+      <div class="hero__overlay"></div>
+
+      <!-- Emojis flotantes decorativos (animación CSS) -->
+      <div class="hero__floaties" aria-hidden="true">
+        <span style="--d:0s;  --x:12%; --s:1.4rem">🦜</span>
+        <span style="--d:3s;  --x:78%; --s:1.8rem">🦋</span>
+        <span style="--d:6s;  --x:35%; --s:1.2rem">🌿</span>
+        <span style="--d:1.5s;--x:60%; --s:1.6rem">🍃</span>
+        <span style="--d:4.5s;--x:88%; --s:1.3rem">🐸</span>
+      </div>
+
+      <div class="hero__content">
+        <!-- Sello / logo institucional en la portada -->
+        <svg class="logo-inst logo-inst--mini hero__seal logo-inst--on-dark" viewBox="0 0 96 96"
+             role="img" aria-label="Orán Natural" focusable="false">
+          <title>Orán Natural</title>
+          <circle cx="48" cy="48" r="44" fill="#f6f1e4"/>
+          <circle cx="48" cy="48" r="44" fill="none" stroke="#14342a" stroke-width="4"/>
+          <clipPath id="logoClipHero"><circle cx="48" cy="48" r="40"/></clipPath>
+          <g clip-path="url(#logoClipHero)">
+            <rect x="6" y="6" width="84" height="84" fill="#f6f1e4"/>
+            <circle cx="48" cy="34" r="13" fill="#e3a516"/>
+            <path d="M6 64 L26 40 L42 60 L60 36 L78 58 L90 46 L90 90 L6 90 Z" fill="#14342a"/>
+            <path d="M6 74 L24 54 L40 72 L58 50 L74 70 L90 58 L90 90 L6 90 Z" fill="#2f5d3a"/>
+            <path d="M6 84 Q30 76 48 84 T90 84 L90 92 L6 92 Z" fill="#1f8a8a"/>
+          </g>
+          <g transform="translate(68 58)">
+            <path d="M0 16 C2 4 14 -5 26 -2 C24 10 14 18 0 16 Z" fill="#9bc24a"/>
+          </g>
+        </svg>
+        <p class="hero__kicker">Salta · Argentina · Reserva de Biósfera de las Yungas</p>
+        <h1 class="hero__title">
+          San Ramón de la<br /><em>Nueva Orán</em>
+        </h1>
+        <p class="hero__lead">
+          En el extremo norte de Salta, donde la selva de montaña se encuentra con
+          los ríos, late uno de los ecosistemas más biodiversos de Argentina.
+        </p>
+        <a href="#geografia" class="hero__scroll">Descender a las Yungas ↓</a>
+      </div>
+
+      <!-- Ticker de curiosidades (marquee, poblado por JS) -->
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker__track" id="ticker"></div>
+      </div>
+    </section>
+
+    <!-- ======================= ÍNDICE / SUMARIO ======================= -->
+    <section class="section section--editorial" id="indice">
+      <header class="section__head section__head--center">
+        <span class="section__index">00 — Sumario</span>
+        <h2 class="section__title">En este número</h2>
+        <p class="section__intro">
+          Un recorrido por la naturaleza de San Ramón de la Nueva Orán: territorio,
+          fauna, flora, ríos y conservación. Elegí por dónde empezar.
+        </p>
+      </header>
+
+      <!-- Lista del sumario (poblada por JS desde SUMARIO) -->
+      <ol class="sumario" id="lista-sumario" aria-label="Índice de secciones de la revista"></ol>
+    </section>
+
+    <!-- ======================= GEOGRAFÍA / TERRITORIO ======================= -->
+    <section class="section section--editorial" id="geografia">
+      <header class="section__head">
+        <span class="section__index">01 — El territorio</span>
+        <h2 class="section__title">Entre las Yungas y la llanura chaqueña</h2>
+      </header>
+
+      <!-- Grilla editorial asimétrica -->
+      <div class="grid-editorial">
+        <article class="card-text card-text--lead" data-reveal>
+          <h3>Una ciudad frontera</h3>
+          <p>
+            Cabecera del departamento Orán, está a unos <strong>270 km de la ciudad
+            de Salta</strong> y muy cerca de la frontera con Bolivia, lo que la
+            convierte en un centro de intercambio comercial del norte argentino.
+          </p>
+        </article>
+
+        <article class="card-stat" data-reveal>
+          <span class="card-stat__num" data-countup="270">0</span>
+          <span class="card-stat__label">km hasta Salta capital</span>
+        </article>
+
+        <article class="card-text" data-reveal>
+          <h3>Clima subtropical</h3>
+          <p>
+            Con estación seca: veranos cálidos y lluviosos, inviernos más templados.
+            La humedad es alta casi todo el año por la influencia de las Yungas y los
+            vientos húmedos del este.
+          </p>
+        </article>
+
+        <article class="card-text" data-reveal>
+          <h3>Relieve diverso</h3>
+          <p>
+            Al oeste, las <strong>Sierras Subandinas</strong> y las Yungas, con
+            quebradas y montañas cubiertas de vegetación. Al este, sectores llanos
+            que hacen de transición hacia la llanura chaqueña.
+          </p>
+        </article>
+
+        <article class="card-quote" data-reveal>
+          <blockquote>
+            «La combinación de montañas, selvas y llanuras favorece una gran
+            variedad de especies vegetales y animales.»
+          </blockquote>
+          <cite>El río Bermejo articula la riqueza hídrica de la región.</cite>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================= BIODIVERSIDAD ======================= -->
+    <section class="section section--dark" id="biodiversidad">
+      <header class="section__head section__head--center">
+        <span class="section__index">02 — Biodiversidad</span>
+        <h2 class="section__title">Fauna de las Yungas</h2>
+        <p class="section__intro">
+          Mamíferos, aves, reptiles, anfibios y peces conviven en una de las regiones
+          más ricas del país. Una muestra de sus protagonistas.
+        </p>
+      </header>
+
+      <!-- Galería poblada por JS (mosaico asimétrico). -->
+      <div class="mosaico" id="galeria-fauna" aria-live="polite"></div>
+    </section>
+
+    <!-- ======================= FLORA ======================= -->
+    <section class="section section--editorial" id="flora">
+      <header class="section__head">
+        <span class="section__index">03 — Flora botánica</span>
+        <h2 class="section__title">Árboles que sostienen la selva</h2>
+        <p class="section__intro">
+          Del catálogo botánico de campo: especies emblemáticas y sus usos
+          tradicionales.
+        </p>
+      </header>
+
+      <!-- Banner real de la selva de Yungas -->
+      <figure class="flora-banner" data-reveal>
+        <img src="assets/img/selva-cascada.png"
+          alt="Selva de Yungas con cascada en el departamento de Orán"
+          loading="lazy" decoding="async" />
+        <figcaption>Selva de Yungas — el hábitat de la flora de Orán</figcaption>
+      </figure>
+
+      <ul class="flora-list" id="lista-flora"></ul>
+    </section>
+
+    <!-- ======================= CIRCUITOS TURÍSTICOS (INTERACTIVO) ======================= -->
+    <section class="section section--rios" id="circuitos">
+      <header class="section__head section__head--center">
+        <span class="section__index">04 — Circuitos turísticos</span>
+        <h2 class="section__title">Los ríos de Orán, en movimiento</h2>
+        <p class="section__intro">
+          El Blanco, el Pescado y el Bermejo articulan un corredor ecológico.
+          Filtrá las experiencias según lo que quieras vivir.
+        </p>
+      </header>
+
+      <!-- Controles de filtrado (generados por JS desde FILTROS) -->
+      <div class="filtros" id="filtros-circuitos" role="group"
+        aria-label="Filtrar circuitos turísticos"></div>
+
+      <!-- Tarjetas de circuitos (generadas por JS desde CIRCUITOS) -->
+      <div class="circuitos" id="lista-circuitos" aria-live="polite"></div>
+    </section>
+
+    <!-- ======================= INFORMACIÓN PRÁCTICA ======================= -->
+    <section class="section section--editorial" id="info">
+      <header class="section__head section__head--center">
+        <span class="section__index">05 — Información práctica</span>
+        <h2 class="section__title">Datos útiles para tu visita</h2>
+        <p class="section__intro">
+          Todo lo que necesitás saber antes de viajar a Orán: cómo llegar, cuándo ir,
+          con quién recorrer la selva y a quién consultar. Planificá tu travesía con cabeza.
+        </p>
+      </header>
+
+      <ul class="info-grid">
+        <!-- Cómo llegar / ubicación -->
+        <li class="info-card" data-reveal>
+          <span class="info-card__icono" aria-hidden="true">🧭</span>
+          <h3 class="info-card__titulo">Cómo llegar</h3>
+          <p class="info-card__texto">
+            Orán está en el <strong>extremo norte de Salta</strong>, a unos
+            <strong>270 km de la ciudad de Salta</strong> y muy cerca de la frontera con
+            Bolivia. La <strong>Ruta Nacional 50</strong> la une con Aguas Blancas y el paso
+            fronterizo.
+          </p>
+          <ul class="info-card__lista">
+            <li>~270 km desde Salta capital</li>
+            <li>RN 50 hacia Aguas Blancas / Bolivia</li>
+            <li>Cabecera del departamento Orán</li>
+          </ul>
+        </li>
+
+        <!-- Cuándo ir / clima -->
+        <li class="info-card" data-reveal>
+          <span class="info-card__icono" aria-hidden="true">🌦️</span>
+          <h3 class="info-card__titulo">Cuándo ir</h3>
+          <p class="info-card__texto">
+            Clima <strong>subtropical con estación seca</strong>: la mejor época para los
+            ríos y la selva es el período seco. Entre <strong>noviembre y abril</strong> las
+            lluvias tropicales generan crecidas.
+          </p>
+          <p class="info-card__alerta">
+            ⚠️ Las crecidas anegan la RN 50 y, durante las alertas, se suspenden travesías
+            náuticas, pesca y senderismo.
+          </p>
+        </li>
+
+        <!-- Guías habilitados -->
+        <li class="info-card" data-reveal>
+          <span class="info-card__icono" aria-hidden="true">🪪</span>
+          <h3 class="info-card__titulo">Guías habilitados</h3>
+          <p class="info-card__texto">
+            El acompañamiento de <strong>guías habilitados es obligatorio</strong>,
+            registrados ante el <strong>Ministerio de Turismo y Deportes de Salta</strong>.
+            Ellos proveen embarcación, equipo y permisos.
+          </p>
+          <ul class="info-card__lista">
+            <li>Pesca con captura y devolución</li>
+            <li>Veda de pesca desde septiembre/octubre</li>
+          </ul>
+        </li>
+
+        <!-- Áreas protegidas -->
+        <li class="info-card" data-reveal>
+          <span class="info-card__icono" aria-hidden="true">🌳</span>
+          <h3 class="info-card__titulo">Áreas protegidas</h3>
+          <p class="info-card__texto">
+            La región forma parte de un corredor de naturaleza protegida que conviene
+            recorrer con respeto y autorización.
+          </p>
+          <ul class="info-card__lista">
+            <li>Parque Provincial Laguna Pintascayo</li>
+            <li>Parque Nacional Baritú</li>
+          </ul>
+        </li>
+
+        <!-- Contacto oficial (ocupa el ancho con mapa) -->
+        <li class="info-card info-card--contacto" data-reveal>
+          <span class="info-card__icono" aria-hidden="true">📍</span>
+          <h3 class="info-card__titulo">Contacto oficial</h3>
+          <p class="info-card__texto">
+            <strong>Gerencia de Turismo de Orán</strong><br />
+            Hipólito Yrigoyen 141, San Ramón de la Nueva Orán, Salta.
+          </p>
+          <p class="info-card__contacto">
+            <a href="mailto:gerenciaturaismooran@gmail.com">✉️ gerenciaturaismooran@gmail.com</a>
+            <a href="tel:+543878358491">📞 +54 3878 35-8491</a>
+          </p>
+          <figure class="info-card__mapa">
+            <img src="assets/img/mapa.png"
+              alt="Mapa de ubicación de San Ramón de la Nueva Orán, en el norte de Salta"
+              loading="lazy" decoding="async" />
+          </figure>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ======================= ENTRETENIMIENTO (INTERACTIVO) ======================= -->
+    <section class="section section--editorial" id="entretenimiento">
+      <header class="section__head section__head--center">
+        <span class="section__index">06 — Para divertirte</span>
+        <h2 class="section__title">Poné a prueba lo que sabés de Orán</h2>
+        <p class="section__intro">
+          Un juego rápido sobre la fauna, los ríos, la geografía y la conservación de
+          San Ramón de la Nueva Orán. Respondé, sumá puntos y, cuando quieras, volvé a empezar.
+        </p>
+      </header>
+
+      <!-- Tarjeta del quiz: la pueblan/manejan desde JS (initQuiz) -->
+      <div class="quiz" id="quiz" data-reveal>
+        <!-- Marcador de puntaje (accesible) -->
+        <div class="quiz__scorecard">
+          <p class="quiz__score-label">Tu puntaje</p>
+          <p class="quiz__score" id="quiz-score" aria-live="polite" aria-atomic="true">0 / 0</p>
+          <div class="quiz__progress" aria-hidden="true">
+            <span class="quiz__progress-bar" id="quiz-progress"></span>
+          </div>
+        </div>
+
+        <!-- Cuerpo de la pregunta (render dinámico) -->
+        <div class="quiz__body" id="quiz-body"></div>
+
+        <!-- Mensaje de acierto/error -->
+        <p class="quiz__feedback" id="quiz-feedback" role="status" aria-live="assertive"></p>
+
+        <!-- Controles -->
+        <div class="quiz__controls">
+          <button type="button" class="quiz__btn quiz__btn--next" id="quiz-next" hidden>
+            Siguiente pregunta →
+          </button>
+          <button type="button" class="quiz__btn quiz__btn--restart" id="quiz-restart" hidden>
+            ↺ Jugar de nuevo
+          </button>
+        </div>
+      </div>
+
+      <!-- Sopa de letras: plantas nativas del catálogo botánico -->
+      <div class="sopa" id="sopa" data-reveal>
+        <div class="sopa__head">
+          <h3 class="sopa__title">🔤 Sopa de letras · Plantas nativas</h3>
+          <p class="sopa__hint">
+            Arrastrá (o tocá y deslizá) sobre las letras para marcar las plantas del
+            catálogo botánico. Pueden estar en horizontal, vertical o diagonal… ¡y al revés!
+          </p>
+        </div>
+        <div class="sopa__layout">
+          <div class="sopa__grid" id="sopa-grid" role="grid" aria-label="Sopa de letras"></div>
+          <aside class="sopa__side">
+            <p class="sopa__progress">
+              <span id="sopa-found">0</span> / <span id="sopa-total">0</span> encontradas
+            </p>
+            <ul class="sopa__words" id="sopa-words"></ul>
+            <p class="sopa__win" id="sopa-win" role="status" hidden>
+              🌿 ¡Las encontraste todas! Bien ahí.
+            </p>
+            <button type="button" class="sopa__reset" id="sopa-reset">↺ Nueva sopa</button>
+          </aside>
+        </div>
+      </div>
+
+      <!-- ¿Sabías que...? -->
+      <h3 class="sabias__title">¿Sabías que…?</h3>
+      <ul class="sabias" id="sabias-list" aria-label="Curiosidades sobre Orán"></ul>
+    </section>
+
+    <!-- ======================= CONSERVACIÓN / PATRIMONIO ======================= -->
+    <section class="section section--manifiesto" id="conservacion">
+      <header class="section__head section__head--center">
+        <span class="section__index">07 — Patrimonio natural</span>
+        <h2 class="section__title">Cuidemos hoy para disfrutar siempre</h2>
+        <p class="section__intro">
+          Proteger el patrimonio de Orán es responsabilidad de todos. Pequeñas
+          acciones, un gran legado.
+        </p>
+      </header>
+      <div class="manifiesto-grid" id="lista-conservacion"></div>
+    </section>
+  </main>
+
+  <!-- ======================= PIE / CONTACTO ======================= -->
+  <footer class="site-footer" id="contacto">
+    <div class="footer__brand">
+      <p class="footer__logo">Orán<span>Natural</span></p>
+      <p class="footer__tag">Naturaleza que nos une.</p>
+    </div>
+    <div class="footer__contact" id="bloque-contacto"></div>
+    <p class="footer__legal">
+      Revista interactiva educativa · Contenido basado en documentación local de
+      San Ramón de la Nueva Orán, Salta.
+    </p>
+  </footer>
+
+  <!-- JS modular ES6 -->
+  <script type="module" src="js/interactivity.js"></script>
+</body>
+</html>
