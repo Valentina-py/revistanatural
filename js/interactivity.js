@@ -659,6 +659,30 @@ function initSopa() {
   else gridEl.textContent = 'No se pudo generar la sopa; recargá la página.';
 }
 
+/* ============================ 7c. MENÚ MÓVIL (hamburguesa) ============================ */
+function initNav() {
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('nav');
+  if (!toggle || !nav) return;
+
+  const setOpen = (open) => {
+    nav.classList.toggle('is-open', open);
+    toggle.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  };
+
+  toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
+  // Cerrar al elegir un enlace
+  nav.addEventListener('click', (e) => { if (e.target.closest('a')) setOpen(false); });
+  // Cerrar con Escape
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+  // Cerrar al volver a escritorio (evita estado “abierto” pegado)
+  window.matchMedia('(min-width: 901px)').addEventListener('change', (ev) => {
+    if (ev.matches) setOpen(false);
+  });
+}
+
 /* ============== 8. CURSOR QUE SIGUE AL MOUSE (lerp + rAF, GPU only) ============== */
 function initCursor() {
   // Solo en dispositivos con puntero fino y si no se pidió menos movimiento.
@@ -724,6 +748,7 @@ function init() {
   initCountUp();
   initQuiz();
   initSopa();
+  initNav();
   initPrint();
   // Los efectos de scroll y el cursor se enganchan tras poblar el DOM.
   initScrollReveal();

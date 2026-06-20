@@ -220,6 +220,32 @@ a { color: inherit; text-decoration: none; }
 }
 .nav__cta:hover { background: var(--verde-selva); }
 
+/* Botón hamburguesa (solo en móvil) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px; height: 44px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  z-index: 60;
+}
+.nav-toggle span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--verde-yunga);
+  border-radius: 2px;
+  transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
+}
+/* Animación a "X" cuando el menú está abierto */
+.nav-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+.nav-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 /* ============================== 5. HERO ============================== */
 .hero {
   position: relative;
@@ -792,8 +818,36 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ============================== 13. RESPONSIVE ============================== */
-@media (max-width: 900px) {
-  .nav a:not(.nav__cta) { display: none; }   /* nav simplificada en móvil */
+@media (max-width: 1024px) {
+  /* ---- Menú hamburguesa ---- */
+  .nav-toggle { display: inline-flex; }
+  .nav {
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0.4rem clamp(1rem, 4vw, 3rem) 1.2rem;
+    background: color-mix(in srgb, var(--crema) 97%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid color-mix(in srgb, var(--tinta) 10%, transparent);
+    box-shadow: 0 18px 34px rgba(27, 26, 22, 0.14);
+    transform: translateY(-10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), visibility 0.25s;
+  }
+  .nav.is-open { opacity: 1; visibility: visible; transform: translateY(0); }
+  .nav a {
+    padding: 0.9rem 0.2rem;
+    font-size: 1.02rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--tinta) 8%, transparent);
+  }
+  .nav__cta {
+    margin-top: 0.8rem;
+    text-align: center;
+    border-bottom: none;
+  }
 
   /* Grilla editorial: 2 columnas simétricas */
   .grid-editorial { grid-template-columns: repeat(2, 1fr); }
@@ -809,6 +863,13 @@ a { color: inherit; text-decoration: none; }
   .fauna-card { flex-basis: calc((100% - var(--gap)) / 2); }
 
   .site-footer { grid-template-columns: 1fr; }
+}
+
+/* "¿Sabías que?": apilar foto y curiosidades en pantallas medianas */
+@media (max-width: 760px) {
+  .sabias-layout { grid-template-columns: 1fr; }
+  .sabias-foto { min-height: 200px; }
+  .sabias-foto img { min-height: 200px; max-height: 260px; }
 }
 
 @media (max-width: 560px) {
@@ -1196,19 +1257,42 @@ a { color: inherit; text-decoration: none; }
   .sopa__cell { font-size: 0.72rem; }
 }
 
+/* Bloque "¿Sabías que?": foto a un lado + curiosidades en 2×2 */
+.sabias-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.6fr);
+  gap: var(--gap);
+  align-items: stretch;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+}
+.sabias-foto {
+  margin: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 260px;
+}
+.sabias-foto img {
+  width: 100%; height: 100%;
+  min-height: 260px;
+  object-fit: cover;
+  display: block;
+}
+.sabias-main { display: flex; flex-direction: column; }
+
 .sabias__title {
   font-size: var(--fs-h3);
   color: var(--verde-yunga);
   text-align: center;
-  margin: clamp(2.5rem, 6vw, 4rem) 0 1.5rem;
+  margin: 0 0 1.2rem;
 }
 .sabias {
   list-style: none;
-  margin: 0 auto;                /* centrado */
+  margin: 0;
   padding: 0;
   display: grid;
   gap: var(--gap);
-  grid-template-columns: repeat(4, 1fr);   /* 4 datos en una fila pareja */
+  grid-template-columns: repeat(2, 1fr);   /* 2×2: parejo, sin huecos raros */
+  flex: 1 1 auto;
 }
 .sabias__item {
   display: flex;
