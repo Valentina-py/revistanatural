@@ -121,7 +121,7 @@ export const FAUNA = [
     grupo: 'Mamíferos', emoji: '🐆',
     nombre: 'Yaguareté',
     cientifico: 'Panthera onca',
-    img: 'assets/img/yaguarete.png',
+    img: 'assets/img/yaguarete.jpg',
     texto:
       'El felino más grande de América. Cazador solitario y nocturno, excelente ' +
       'nadador. En peligro crítico de extinción por la pérdida de hábitat y la caza furtiva.',
@@ -131,7 +131,7 @@ export const FAUNA = [
     grupo: 'Aves', emoji: '🦜',
     nombre: 'Maracaná de cuello dorado',
     cientifico: 'Primolius auricollis',
-    img: 'assets/img/maracana.png',
+    img: 'assets/img/maracana.jpg',
     texto:
       'Loro social de plumaje verde vivo y collar dorado. Se alimenta de semillas ' +
       'y frutos de las Yungas.',
@@ -141,7 +141,7 @@ export const FAUNA = [
     grupo: 'Mamíferos', emoji: '🐗',
     nombre: 'Tapir o anta',
     cientifico: 'Tapirus terrestris',
-    img: 'assets/img/tapir.png',
+    img: 'assets/img/tapir.jpg',
     texto:
       'El mamífero terrestre más grande de Sudamérica. Herbívoro, de trompa corta ' +
       'y móvil, habita zonas boscosas cercanas al agua.',
@@ -150,7 +150,7 @@ export const FAUNA = [
     grupo: 'Aves', emoji: '🐦',
     nombre: 'Tucán grande',
     cientifico: 'Ramphastos toco',
-    img: 'assets/img/tucan.png',
+    img: 'assets/img/tucan.jpg',
     texto:
       'De pico grande y colorido. Se alimenta de frutos, insectos y pequeños ' +
       'vertebrados en el dosel de la selva.',
@@ -159,7 +159,7 @@ export const FAUNA = [
     grupo: 'Peces', emoji: '🐟',
     nombre: 'Dorado',
     cientifico: 'Salminus brasiliensis',
-    img: 'assets/img/dorado.png',
+    img: 'assets/img/dorado.jpg',
     texto:
       'El “tigre de los ríos”. Depredador de gran porte, muy valorado en la pesca ' +
       'deportiva por su fuerza y saltos acrobáticos.',
@@ -169,7 +169,7 @@ export const FAUNA = [
     grupo: 'Aves', emoji: '🦩',
     nombre: 'Espátula rosada',
     cientifico: 'Platalea ajaja',
-    img: 'assets/img/espatula.png',
+    img: 'assets/img/espatula.jpg',
     texto:
       'Plumaje rosado y pico en forma de espátula con el que filtra el alimento en ' +
       'aguas poco profundas. Gregaria.',
@@ -178,7 +178,7 @@ export const FAUNA = [
     grupo: 'Aves', emoji: '🦆',
     nombre: 'Pato criollo',
     cientifico: 'Cairina moschata',
-    img: 'assets/img/pato.png',
+    img: 'assets/img/pato.jpg',
     texto:
       'Pato de gran tamaño, plumaje oscuro y carúnculas rojas en la cara. Habita ' +
       'ambientes acuáticos.',
@@ -187,7 +187,7 @@ export const FAUNA = [
     grupo: 'Aves', emoji: '🪶',
     nombre: 'Pava de monte',
     cientifico: 'Penelope bridgesi',
-    img: 'assets/img/pava.png',
+    img: 'assets/img/pava.jpg',
     texto:
       'Ave de tamaño mediano con plumaje oscuro y piel rojiza en la garganta. ' +
       'Habita los bosques de las Yungas.',
@@ -196,7 +196,7 @@ export const FAUNA = [
     grupo: 'Aves', emoji: '🕊️',
     nombre: 'Garza blanca',
     cientifico: 'Ardea alba',
-    img: 'assets/img/garza.png',
+    img: 'assets/img/garza.jpg',
     texto:
       'Ave zancuda de plumaje blanco, cuello largo y pico puntiagudo. Pesca en ' +
       'aguas poco profundas.',
@@ -205,20 +205,11 @@ export const FAUNA = [
     grupo: 'Reptiles', emoji: '🐊',
     nombre: 'Yacaré overo',
     cientifico: 'Caiman latirostris',
-    img: 'assets/img/yacare.png',
+    img: 'assets/img/yacare.jpg',
     texto:
       'Cocodriliano de hocico ancho. Habita ríos y lagunas; se alimenta de peces, ' +
       'aves y pequeños mamíferos.',
     destacado: true,
-  },
-  {
-    grupo: 'Anfibios', emoji: '🐸',
-    nombre: 'Ranita marsupial',
-    cientifico: 'Gastrotheca sp.',
-    img: 'assets/img/ranita.png',
-    texto:
-      'Anfibio característico de las Yungas: las hembras transportan los huevos en ' +
-      'una bolsa dorsal.',
   },
 ];
 

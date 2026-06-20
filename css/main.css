@@ -272,8 +272,8 @@ h1, h2, h3, p, a, li, blockquote { overflow-wrap: break-word; }
   /* Imagen de portada (la selva de Orán). Si no existe, queda el degradado. */
   background-image:
     radial-gradient(120% 90% at 70% 10%, rgba(155, 194, 74, 0.30), transparent 60%),
-    linear-gradient(180deg, rgba(13,37,29,0.15), rgba(13,37,29,0.85)),
-    url("../assets/img/portada-yungas.png");
+    linear-gradient(180deg, rgba(13,37,29,0.25), rgba(13,37,29,0.78)),
+    url("../assets/img/hero-yungas.jpg");
   background-size: cover;
   background-position: center;
   will-change: transform;
