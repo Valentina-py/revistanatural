@@ -871,11 +871,11 @@ a { color: inherit; text-decoration: none; }
   .site-footer { grid-template-columns: 1fr; }
 }
 
-/* "¿Sabías que?": apilar foto y curiosidades en pantallas medianas */
-@media (max-width: 760px) {
-  .sabias-layout { grid-template-columns: 1fr; }
-  .sabias-foto { min-height: 200px; }
-  .sabias-foto img { min-height: 200px; max-height: 260px; }
+/* En móvil: Información práctica (05) y "¿Sabías que?" en UNA sola columna
+   (cada tarjeta como un bloque, una debajo de la otra) */
+@media (max-width: 768px) {
+  .info-grid,
+  .sabias { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
