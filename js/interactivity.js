@@ -68,7 +68,7 @@ function initFauna() {
 
     const badge = el('span', {
       className: 'fauna-card__badge',
-      textContent: `${f.emoji} ${f.grupo}`,
+      textContent: f.grupo,
     });
 
     const body = el('figcaption', { className: 'fauna-card__body' }, [
@@ -93,7 +93,6 @@ function initFlora() {
   FLORA.forEach((planta, i) => {
     // Cabecera con FOTO real del árbol + emoji y etiqueta superpuestos.
     const lamina = el('div', { className: 'flora-item__lamina' }, [
-      el('span', { className: 'flora-item__emoji', textContent: planta.emoji }),
       el('span', { className: 'flora-item__habito', textContent: planta.habito }),
     ]);
     lamina.dataset.acento = String(i % 4); // color de respaldo si falta la foto
@@ -145,7 +144,6 @@ function initCircuitos() {
       cimg.addEventListener('error', () => cimg.remove(), { once: true });
       foto.append(cimg);
     }
-    foto.append(el('span', { className: 'circuito-card__emoji', textContent: c.emoji || '' }));
 
     const top = el('header', { className: 'circuito-card__top' }, [
       el('span', { className: 'circuito-card__etiqueta', textContent: c.etiqueta }),
@@ -229,7 +227,6 @@ function initConservacion() {
   const frag = document.createDocumentFragment();
   for (const accion of CONSERVACION) {
     const item = el('article', { className: 'manifiesto-item' }, [
-      el('span', { className: 'manifiesto-item__icono', textContent: accion.icono }),
       el('h3', { textContent: accion.titulo }),
       el('p', { textContent: accion.texto }),
     ]);
@@ -402,7 +399,6 @@ function initQuiz() {
     const frag = document.createDocumentFragment();
     for (const dato of SABIAS) {
       const li = el('li', { className: 'sabias__item' }, [
-        el('span', { className: 'sabias__emoji', textContent: dato.emoji, 'aria-hidden': 'true' }),
         el('p', { className: 'sabias__text', textContent: dato.texto }),
       ]);
       li.setAttribute('data-reveal', '');
