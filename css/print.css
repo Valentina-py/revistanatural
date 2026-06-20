@@ -162,8 +162,8 @@
   }
   .info-card__titulo { color: #14342a !important; }
   .info-card__alerta { color: #b1502f !important; background: #f6e7e0 !important; }
-  .info-card__mapa { margin-top: 0.6rem !important; max-height: 8cm; }
-  .info-card__mapa img { height: auto !important; }
+  /* El iframe de Google Maps no se imprime: lo ocultamos para no dejar un recuadro vacío */
+  .info-card__mapa { display: none !important; }
 
   /* ---- Imágenes nítidas y contenidas ---- */
   img { max-width: 100% !important; }
