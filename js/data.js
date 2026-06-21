@@ -132,6 +132,7 @@ export const FAUNA = [
     nombre: 'Maracaná de cuello dorado',
     cientifico: 'Primolius auricollis',
     img: 'assets/img/maracana.jpg',
+    posicion: '50% 8%',          // foto vertical: encuadrar desde arriba para ver la cabeza
     texto:
       'Loro social de plumaje verde vivo y collar dorado. Se alimenta de semillas ' +
       'y frutos de las Yungas.',

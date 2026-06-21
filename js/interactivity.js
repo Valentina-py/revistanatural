@@ -65,6 +65,8 @@ function initFauna() {
       decoding: 'async',
     });
     img.addEventListener('error', () => img.remove(), { once: true });
+    // Encuadre personalizado (p. ej. fotos verticales que deben mostrar la cabeza)
+    if (f.posicion) img.style.objectPosition = f.posicion;
 
     const badge = el('span', {
       className: 'fauna-card__badge',
