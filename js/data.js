@@ -62,7 +62,7 @@ export const CIRCUITOS = [
     titulo: 'Senderismo e Integración Regional',
     rios: 'Reserva Pintascayo · El Oculto · Anta Muerta',
     emoji: '🥾',
-    img: 'assets/img/mapa.png',
+    img: 'assets/img/quebrada.jpg',
     categorias: ['senderismo', 'ecoturismo'],
     etiqueta: 'Trekking y Selva',
     acento: 'senderismo',

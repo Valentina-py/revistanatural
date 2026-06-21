@@ -56,6 +56,25 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* ===== TEMA CULTURAL (Raíces de Orán): remapea los verdes a tonos cálidos ===== */
+.tema-cultural {
+  --verde-yunga:  #5a2a16;   /* marrón profundo (fondos oscuros) */
+  --verde-selva:  #a14a2a;   /* terracota medio */
+  --verde-lima:   #e3a516;   /* dorado (acento) */
+  --agua-rio:     #b5512f;   /* ladrillo (detalle) */
+}
+.tema-cultural .hero__media {
+  background-image:
+    radial-gradient(120% 90% at 70% 10%, rgba(227,165,22,0.22), transparent 60%),
+    linear-gradient(180deg, rgba(60,24,12,0.28), rgba(60,24,12,0.80)),
+    url("../assets/img/cultura/caporales.jpg");
+}
+.tema-cultural .hero__title em {
+  background: linear-gradient(90deg, var(--dorado), var(--rosa-espatula), var(--tierra-roja), var(--dorado));
+  background-size: 300% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
 /* ============================== 2. RESET / BASE ============================== */
 *,
 *::before,
@@ -205,6 +224,30 @@ h1, h2, h3, p, a, li, blockquote { overflow-wrap: break-word; }
   backdrop-filter: blur(10px);
   border-bottom: 1px solid color-mix(in srgb, var(--tinta) 10%, transparent);
 }
+/* Marca del header: logo del instituto + nombre de la revista */
+.header__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  text-decoration: none;
+}
+.header__inst {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+.header__brand-text {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+  color: var(--verde-yunga);
+  line-height: 1;
+}
+.header__brand-text strong { color: var(--verde-selva); font-weight: 900; }
+
 .brand {
   font-family: var(--font-display);
   font-weight: 900;
@@ -651,7 +694,7 @@ h1, h2, h3, p, a, li, blockquote { overflow-wrap: break-word; }
 /* ============================== 9b. GALERÍA DE PAISAJES ============================== */
 .galeria {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--gap);
 }
 .galeria__item {
@@ -1498,4 +1541,90 @@ h1, h2, h3, p, a, li, blockquote { overflow-wrap: break-word; }
   }
   .info-card__mapa { margin-top: 1rem; }
   .info-card__mapa img { min-height: 180px; }
+}
+
+/* ============================== CULTURAL · LAYOUTS ============================== */
+.cult-split {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+.cult-figure { margin: 0; border-radius: var(--radius); overflow: hidden; box-shadow: 0 16px 40px rgba(0,0,0,.18); }
+.cult-figure img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform .6s var(--ease); }
+.cult-figure:hover img { transform: scale(1.05); }
+.cult-text h3 { font-size: var(--fs-h3); color: var(--verde-yunga); margin-bottom: .6rem; }
+.cult-text p { color: var(--tinta-suave); }
+.cult-quote {
+  border-left: 4px solid var(--dorado);
+  padding: .4rem 0 .4rem 1.2rem;
+  margin: 1.2rem 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--verde-yunga);
+}
+.cult-list { list-style: none; margin: 0; padding: 0; }
+.cult-list li { position: relative; padding-left: 1.4rem; margin-bottom: .5rem; color: var(--tinta-suave); }
+.cult-list li::before { content: "—"; position: absolute; left: 0; color: var(--tierra-roja); }
+.chips { display: flex; flex-wrap: wrap; gap: .55rem; margin: .6rem 0 0; padding: 0; list-style: none; }
+.chips li {
+  background: color-mix(in srgb, var(--dorado) 20%, var(--crema));
+  color: var(--verde-yunga);
+  padding: .4rem 1rem; border-radius: 999px; font-size: .9rem; font-weight: 600;
+}
+.dos-cols { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: clamp(1.5rem,4vw,3rem); }
+.calendario { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px,1fr)); gap: var(--gap); }
+.mes-card { background: var(--crema-2); border-radius: var(--radius); padding: 1.3rem 1.5rem; border-left: 4px solid var(--tierra-roja); }
+.mes-card__mes { color: var(--tierra-roja); font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; margin-bottom: .5rem; }
+.mes-card h4 { font-family: var(--font-body); font-size: .95rem; color: var(--verde-yunga); margin: .7rem 0 .15rem; font-weight: 700; }
+.mes-card p { font-size: .88rem; color: var(--tinta-suave); margin: 0; }
+
+/* ============================== INDEX · PORTAL ============================== */
+.portal { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--gap); }
+.portal__card {
+  position: relative; display: flex; flex-direction: column; justify-content: flex-end;
+  min-height: 340px; border-radius: var(--radius); overflow: hidden;
+  color: var(--crema); text-decoration: none; isolation: isolate;
+}
+.portal__card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .6s var(--ease); }
+.portal__card::after { content:""; position:absolute; inset:0; z-index:-1; background: linear-gradient(180deg, transparent 30%, rgba(13,37,29,.92)); }
+.portal__card--cultural::after { background: linear-gradient(180deg, transparent 30%, rgba(60,24,12,.92)); }
+.portal__card:hover img { transform: scale(1.06); }
+.portal__card:hover { box-shadow: 0 22px 50px rgba(0,0,0,.3); }
+.portal__body { padding: clamp(1.5rem, 3vw, 2.2rem); }
+.portal__kicker { text-transform: uppercase; letter-spacing: .2em; font-size: .75rem; font-weight: 700; color: var(--verde-lima); }
+.portal__card--cultural .portal__kicker { color: var(--dorado); }
+.portal__title { font-family: var(--font-display); font-weight: 900; font-size: clamp(1.8rem,4vw,2.8rem); line-height: 1.05; margin: .3rem 0 .5rem; }
+.portal__desc { font-size: .98rem; color: color-mix(in srgb, var(--crema) 88%, transparent); margin: 0 0 1rem; }
+.portal__btn { align-self: flex-start; background: var(--crema); color: var(--verde-yunga); font-weight: 700; padding: .6rem 1.3rem; border-radius: 999px; font-size: .95rem; transition: transform .25s var(--ease); }
+.portal__card:hover .portal__btn { transform: translateX(4px); }
+
+@media (max-width: 768px) {
+  .cult-split, .dos-cols, .portal { grid-template-columns: 1fr; }
+}
+
+/* ============================== CONTROLES DEL HEADER ============================== */
+.header__controls { display: flex; align-items: center; gap: .5rem; flex: 0 0 auto; }
+
+/* Conmutador de revista (Natural / Cultural) */
+.rev-switch {
+  display: inline-flex;
+  background: color-mix(in srgb, var(--tinta) 8%, transparent);
+  border-radius: 999px;
+  padding: 3px;
+}
+.rev-switch__item {
+  font-size: .82rem; font-weight: 600;
+  padding: .35rem .8rem; border-radius: 999px;
+  color: var(--tinta-suave); white-space: nowrap;
+  transition: background .25s var(--ease), color .25s var(--ease);
+}
+.rev-switch__item:hover { color: var(--verde-yunga); }
+.rev-switch__item.is-active { background: var(--verde-yunga); color: var(--crema); }
+.tema-cultural .rev-switch__item.is-active { background: var(--tierra-roja); }
+
+@media (max-width: 560px) {
+  .header__brand-text { display: none; }   /* en móvil, solo el logo para dar lugar */
+  .rev-switch__item { padding: .35rem .6rem; font-size: .78rem; }
 }
