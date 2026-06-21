@@ -83,7 +83,7 @@ export const CIRCUITOS = [
     titulo: 'Conexión con el Parque Nacional Baritú',
     rios: 'Yunga salteña · Área protegida',
     emoji: '🌲',
-    img: 'assets/img/selva-tuc.jpg',
+    img: 'assets/img/baritu-selva.jpg',
     categorias: ['ecoturismo', 'senderismo'],
     etiqueta: 'Ecoturismo de Selva',
     acento: 'ecoturismo',
