@@ -75,6 +75,39 @@
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 
+/* ----- PORTAL (inicio): identidad propia = mezcla de ambas revistas ----- */
+.tema-portal .hero__media {
+  /* Capa base: la selva (Natural) a la izquierda */
+  background-color: #12231d;
+  background-image:
+    linear-gradient(180deg, rgba(10,24,18,0.28), rgba(10,24,18,0.80)),
+    url("../assets/img/hero-yungas.jpg");
+  background-repeat: no-repeat;
+  background-position: center, left center;
+  background-size: cover, cover;
+}
+/* Capa superior: el carnaval (Cultural) a la derecha, que se DIFUMINA hacia el centro
+   gracias a la máscara, fundiéndose con la selva sin un corte visible */
+.tema-portal .hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(180deg, rgba(10,24,18,0.20), rgba(10,24,18,0.72)),
+    url("../assets/img/cultura/caporales.jpg");
+  background-repeat: no-repeat;
+  background-position: center, right center;
+  background-size: cover, cover;
+  -webkit-mask-image: linear-gradient(90deg, transparent 22%, #000 70%);
+          mask-image: linear-gradient(90deg, transparent 22%, #000 70%);
+}
+.tema-portal .hero__title em {
+  /* Degradado que une el verde (naturaleza) con el dorado y el terracota (cultura) */
+  background: linear-gradient(90deg, var(--verde-lima), var(--dorado), var(--tierra-roja), var(--verde-lima));
+  background-size: 300% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
 /* ============================== 2. RESET / BASE ============================== */
 *,
 *::before,
@@ -181,29 +214,20 @@ h1, h2, h3, p, a, li, blockquote { overflow-wrap: break-word; }
 }
 .cursor.is-on { opacity: 1; }
 
-/* Punto central: sigue al mouse al instante */
+/* Punto único: pequeño y nítido, sigue al mouse al instante.
+   mix-blend-mode lo hace visible sobre cualquier fondo (claro u oscuro). */
 .cursor--dot {
-  width: 8px; height: 8px;
-  margin: -4px 0 0 -4px;
-  background: var(--dorado);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--verde-yunga) 40%, transparent);
+  width: 12px; height: 12px;
+  margin: -6px 0 0 -6px;
+  background: #fff;
+  mix-blend-mode: difference;
+  transition: width 0.2s var(--ease), height 0.2s var(--ease),
+              margin 0.2s var(--ease);
 }
-/* Anillo: persigue al punto con retardo (efecto de seguimiento) */
-.cursor--ring {
-  width: 36px; height: 36px;
-  margin: -18px 0 0 -18px;
-  border: 2px solid var(--verde-lima);
-  background: color-mix(in srgb, var(--verde-lima) 10%, transparent);
-  transition: width 0.25s var(--ease), height 0.25s var(--ease),
-              margin 0.25s var(--ease), background 0.25s var(--ease),
-              border-color 0.25s var(--ease);
-}
-/* Sobre elementos interactivos: el anillo crece y cambia de color */
-.cursor--ring.is-active {
-  width: 60px; height: 60px;
-  margin: -30px 0 0 -30px;
-  background: color-mix(in srgb, var(--dorado) 20%, transparent);
-  border-color: var(--dorado);
+/* Sobre elementos interactivos crece un poco para dar feedback */
+.cursor--dot.is-active {
+  width: 24px; height: 24px;
+  margin: -12px 0 0 -12px;
 }
 /* En táctil o con menos movimiento, no se usa (y el puntero nativo sigue visible) */
 @media (hover: none), (prefers-reduced-motion: reduce) {

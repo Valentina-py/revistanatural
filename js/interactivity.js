@@ -681,56 +681,34 @@ function initNav() {
   });
 }
 
-/* ============== 8. CURSOR QUE SIGUE AL MOUSE (lerp + rAF, GPU only) ============== */
+/* ============== 8. CURSOR QUE SIGUE AL MOUSE (solo punto, GPU only) ============== */
 function initCursor() {
   // Solo en dispositivos con puntero fino y si no se pidió menos movimiento.
   if (!window.matchMedia('(pointer: fine)').matches) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  // Ocultamos el puntero nativo y lo reemplazamos por uno propio (punto + anillo).
+  // Ocultamos el puntero nativo y lo reemplazamos por un único punto.
   document.documentElement.classList.add('has-cursor');
 
-  const ring = el('div', { className: 'cursor cursor--ring' });
-  const dot  = el('div', { className: 'cursor cursor--dot' });
-  document.body.append(ring, dot);
-
-  let mx = window.innerWidth / 2, my = window.innerHeight / 2; // objetivo (mouse)
-  let rx = mx, ry = my;                                        // posición del anillo
-  let raf = null;
-
-  const loop = () => {
-    // Interpolación: el anillo "persigue" al punto con suavidad.
-    rx += (mx - rx) * 0.18;
-    ry += (my - ry) * 0.18;
-    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-    if (Math.abs(mx - rx) > 0.4 || Math.abs(my - ry) > 0.4) {
-      raf = requestAnimationFrame(loop);
-    } else {
-      raf = null; // se detiene al alcanzar al mouse → no malgasta frames
-    }
-  };
+  const dot = el('div', { className: 'cursor cursor--dot' });
+  document.body.append(dot);
 
   window.addEventListener('mousemove', (e) => {
-    mx = e.clientX; my = e.clientY;
-    // El punto sigue al mouse al instante; el anillo lo persigue con retardo.
-    dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
-    ring.classList.add('is-on');
+    // El punto sigue al mouse al instante (GPU: solo transform).
+    dot.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
     dot.classList.add('is-on');
-    if (!raf) raf = requestAnimationFrame(loop);
   }, { passive: true });
 
   // Al salir de la ventana, ocultamos el cursor propio.
-  document.addEventListener('mouseleave', () => {
-    ring.classList.remove('is-on'); dot.classList.remove('is-on');
-  });
+  document.addEventListener('mouseleave', () => dot.classList.remove('is-on'));
 
   // Crece al pasar sobre elementos interactivos (delegación → cubre lo dinámico).
   const sel = 'a, button, .fauna-card, .circuito-card, .flora-item, .filtro-btn, .sumario__link';
   document.addEventListener('mouseover', (e) => {
-    if (e.target.closest(sel)) ring.classList.add('is-active');
+    if (e.target.closest(sel)) dot.classList.add('is-active');
   });
   document.addEventListener('mouseout', (e) => {
-    if (e.target.closest(sel)) ring.classList.remove('is-active');
+    if (e.target.closest(sel)) dot.classList.remove('is-active');
   });
 }
 
