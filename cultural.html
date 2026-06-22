@@ -26,13 +26,13 @@
       <span class="header__brand-text">Raíces de <strong>Orán</strong></span>
     </a>
     <nav class="nav" id="nav" aria-label="Navegación principal">
+      <a href="#indice">Índice</a>
       <a href="#historia">Historia</a>
-      <a href="#fiestas">Fiestas</a>
       <a href="#carnaval">Carnaval</a>
       <a href="#musica">Folclore</a>
       <a href="#gastronomia">Gastronomía</a>
-      <a href="#artesania">Artesanías</a>
-      <a href="#calendario">Calendario</a>
+      <a href="#recorrido">Turismo</a>
+      <a href="#juegos">Juegos</a>
     </nav>
     <div class="header__controls">
       <div class="rev-switch" role="group" aria-label="Cambiar de revista">
@@ -59,8 +59,82 @@
           Tradiciones y costumbres de San Ramón de la Nueva Orán: fe, identidad,
           folclore y carnaval — el patrimonio vivo del norte argentino.
         </p>
-        <a href="#historia" class="hero__scroll">Entrar a las raíces ↓</a>
+        <a href="#indice" class="hero__scroll">Entrar a las raíces ↓</a>
       </div>
+    </section>
+
+    <!-- ======================= ÍNDICE / SUMARIO ======================= -->
+    <section class="section section--editorial" id="indice">
+      <header class="section__head section__head--center">
+        <span class="section__index">00 — Sumario</span>
+        <h2 class="section__title">En este número</h2>
+        <p class="section__intro">
+          Un recorrido por las raíces de San Ramón de la Nueva Orán: su historia, sus fiestas,
+          su folclore, su cocina, su turismo y juegos para los más chicos. Elegí por dónde empezar.
+        </p>
+      </header>
+      <ol class="sumario" aria-label="Índice de secciones de la revista cultural">
+        <li class="sumario__item" data-reveal>
+          <a class="sumario__link" href="#historia">
+            <span class="sumario__num" aria-hidden="true">01</span>
+            <span class="sumario__body">
+              <h3 class="sumario__name">Historia y Fundación</h3>
+              <p class="sumario__desc">Más de dos siglos: cómo y cuándo nació la ciudad.</p>
+            </span>
+            <span class="sumario__arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li class="sumario__item" data-reveal>
+          <a class="sumario__link" href="#fiestas">
+            <span class="sumario__num" aria-hidden="true">02</span>
+            <span class="sumario__body">
+              <h3 class="sumario__name">Fiestas y Carnaval</h3>
+              <p class="sumario__desc">Patronales de San Ramón, corsos, tinkus y caporales.</p>
+            </span>
+            <span class="sumario__arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li class="sumario__item" data-reveal>
+          <a class="sumario__link" href="#musica">
+            <span class="sumario__num" aria-hidden="true">03</span>
+            <span class="sumario__body">
+              <h3 class="sumario__name">Música, Danzas y Fe</h3>
+              <p class="sumario__desc">Folclore, instrumentos, Pachamama y devoción popular.</p>
+            </span>
+            <span class="sumario__arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li class="sumario__item" data-reveal>
+          <a class="sumario__link" href="#gastronomia">
+            <span class="sumario__num" aria-hidden="true">04</span>
+            <span class="sumario__body">
+              <h3 class="sumario__name">Gastronomía y Artesanías</h3>
+              <p class="sumario__desc">Sabores del norte y oficios hechos a mano.</p>
+            </span>
+            <span class="sumario__arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li class="sumario__item" data-reveal>
+          <a class="sumario__link" href="#recorrido">
+            <span class="sumario__num" aria-hidden="true">05</span>
+            <span class="sumario__body">
+              <h3 class="sumario__name">Recorrido Turístico</h3>
+              <p class="sumario__desc">Plazas, Monumento a Güemes, museo y Casa de la Cultura.</p>
+            </span>
+            <span class="sumario__arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li class="sumario__item" data-reveal>
+          <a class="sumario__link" href="#juegos">
+            <span class="sumario__num" aria-hidden="true">06</span>
+            <span class="sumario__body">
+              <h3 class="sumario__name">Juegos para los más chicos</h3>
+              <p class="sumario__desc">Colorear y buscar las diferencias.</p>
+            </span>
+            <span class="sumario__arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ol>
     </section>
 
     <!-- ======================= HISTORIA / FUNDACIÓN ======================= -->
@@ -71,34 +145,38 @@
       </header>
       <div class="cult-split" data-reveal>
         <figure class="cult-figure">
-          <img src="assets/img/cultura/iglesia-molinos.jpg"
-            alt="Iglesia colonial de adobe blanco con dos campanarios, típica de los pueblos del norte salteño"
+          <img src="assets/img/cultura/monumento-fundador.jpg"
+            alt="Monumento al fundador Don Ramón García de León y Pizarro en una plaza arbolada de Orán"
             loading="lazy" decoding="async" />
-          <figcaption>Las iglesias coloniales de adobe son el sello del norte salteño.</figcaption>
+          <figcaption>Monumento a Don Ramón García de León y Pizarro, fundador de la ciudad.</figcaption>
         </figure>
         <div class="cult-text">
           <p>
             San Ramón de la Nueva Orán fue fundada el <strong>31 de agosto de 1794</strong> por el
-            español <strong>Ramón García de León y Pizarro</strong>, gobernador de Salta del
-            Tucumán. La bautizó así porque esa fecha es el día de <strong>San Ramón Nonato</strong>
-            y porque él mismo había nacido en la ciudad argelina de <strong>Orán</strong>.
+            español <strong>Ramón García de León y Pizarro</strong>, gobernador de la Intendencia de
+            Salta del Tucumán. La bautizó así por una doble razón: esa fecha es el día de
+            <strong>San Ramón Nonato</strong> y él mismo había nacido en la ciudad de
+            <strong>Orán</strong>, en el norte de África.
           </p>
           <p>
-            Fue concebida como una ciudad <strong>estratégica de frontera</strong>: debía proteger
-            el camino hacia el Alto Perú y contener el avance desde el Chaco. Ese origen militar y
-            misional dejó una marca profunda en su religiosidad y en su vida comunitaria.
-          </p>
-          <p>
-            Cabecera del departamento Orán, en el extremo norte de Salta, hoy es el
-            <strong>segundo mayor centro urbano</strong> de la provincia, con alrededor de
-            <strong>87.000 habitantes</strong> (censo 2022). Su pasado colonial, la cercanía con
-            Bolivia y el entorno de las Yungas moldearon una identidad mestiza única, donde
-            conviven lo <strong>criollo, lo andino y lo originario</strong>.
+            Fue concebida como una ciudad <strong>estratégica de frontera</strong>: debía reforzar
+            el nexo entre Salta y la villa de Tarija y consolidar el control del territorio. Años
+            antes, en 1779, los <strong>franciscanos</strong> habían establecido en la zona la
+            reducción de Nuestra Señora de las Angustias del Zenta; ese origen militar y misional
+            dejó una marca profunda en su religiosidad. Una <strong>Cédula Real</strong> aprobó
+            formalmente la fundación el <strong>4 de mayo de 1797</strong>.
           </p>
           <blockquote class="cult-quote">
             Cada 31 de agosto, Orán celebra a la vez el cumpleaños de la ciudad y la fiesta de su
             santo patrono.
           </blockquote>
+          <p class="cult-dato">
+            <strong>El fundador.</strong> Ramón García de León y Pizarro (Orán, 1745 – Charcas,
+            1815) provenía de una familia militar y noble; ostentó los títulos de
+            <strong>Marqués de Casa Pizarro</strong> y <strong>Vizconde de la Nueva Orán</strong>.
+            Para poblar la ciudad trasladó alrededor de <strong>150 familias</strong> con su ganado.
+            Más tarde fue presidente de la Real Audiencia de Charcas.
+          </p>
         </div>
       </div>
     </section>
@@ -111,8 +189,10 @@
       </header>
       <div class="cult-split" data-reveal>
         <figure class="cult-figure">
-          <img src="assets/img/cultura/procesion.jpg"
-            alt="Procesión de la fiesta patronal en San Andrés, Orán" loading="lazy" decoding="async" />
+          <img src="assets/img/cultura/patrono-oran.jpg"
+            alt="Imagen de San Ramón Nonato sobre un anda cubierta de flores rojas y blancas, escoltada en la procesión patronal de Orán"
+            loading="lazy" decoding="async" />
+          <figcaption>San Ramón Nonato recorre las calles en su procesión, cada 31 de agosto.</figcaption>
         </figure>
         <div class="cult-text">
           <p>
@@ -169,11 +249,22 @@
             vivo y coreografías que llenan de alegría las calles. Familias enteras participan de
             esta festividad, una de las principales expresiones de identidad local.
           </p>
+          <p style="color: color-mix(in srgb, var(--crema) 85%, transparent)">
+            Su gran cita son los <strong>Corsos Color de Orán</strong>, que se desarrollan en el
+            <strong>Corsódromo</strong> entre mediados de <strong>enero y febrero</strong>. Cada
+            noche desfilan más de <strong>25 comparsas</strong>, evaluadas por un jurado, en una
+            de las fiestas de carnaval más convocantes del norte.
+          </p>
+          <ul class="chips">
+            <li>Tinkus Wistus</li><li>Diablada del Socavón</li><li>Caporales Urus</li>
+            <li>Ñandereko</li><li>Massay</li><li>Tehuelches</li>
+          </ul>
         </div>
         <figure class="cult-figure">
-          <img src="assets/img/cultura/carnaval.jpg"
-            alt="Comparsa de tinkus con trajes verdes y rojos y tocados de plumas bailando en un corso del norte argentino"
+          <img src="assets/img/cultura/oran-corso.jpg"
+            alt="Bailarín de tinku con traje rosa y tocado de plumas blancas en el corso de Orán, Salta"
             loading="lazy" decoding="async" />
+          <figcaption style="color: color-mix(in srgb, var(--crema) 75%, transparent)">Tinku en el corso de Orán.</figcaption>
         </figure>
       </div>
     </section>
@@ -210,10 +301,57 @@
           </p>
         </div>
         <figure class="cult-figure">
-          <img src="assets/img/cultura/san-francisco.jpg"
-            alt="Fachada barroca de una iglesia salteña con torre roja y dorada recortada contra el cielo"
+          <img src="assets/img/cultura/catedral-oran.jpg"
+            alt="Catedral de la diócesis de Orán, de diseño moderno, con su alto campanario de ladrillo y un jardín de rosas"
             loading="lazy" decoding="async" />
+          <figcaption>La Catedral, sede de la diócesis de Orán, frente a la plaza.</figcaption>
         </figure>
+      </div>
+
+      <header class="section__head section__head--center" style="margin-top: clamp(2rem,5vw,3rem)">
+        <h3 class="section__title" style="font-size: clamp(1.4rem,4vw,2rem)">Iglesias y parroquias</h3>
+        <p class="section__intro">
+          Los templos de Orán marcan el pulso de la fe de la ciudad. Estos son algunos de los
+          principales:
+        </p>
+      </header>
+      <div class="zonas">
+        <article class="zona-card" data-reveal>
+          <img class="zona-card__img" src="assets/img/cultura/catedral-oran.jpg"
+            alt="Catedral de Orán" loading="lazy" decoding="async" />
+          <div class="zona-card__body">
+            <h3>Catedral de Orán</h3>
+            <p>Sede de la diócesis. Custodia las imágenes de <strong>San Ramón Nonato</strong> y de
+              la <strong>Virgen del Carmen</strong>, ambos patronos de la ciudad desde su fundación.</p>
+          </div>
+        </article>
+        <article class="zona-card" data-reveal>
+          <img class="zona-card__img" src="assets/img/cultura/iglesia-san-antonio.jpg"
+            alt="Interior de la Iglesia San Antonio de Padua de Orán, con un mural de la crucifixión" loading="lazy" decoding="async" />
+          <div class="zona-card__body">
+            <h3>Iglesia San Antonio de Padua</h3>
+            <p>Un templo de barrio muy querido, con su gran mural del Calvario y la leyenda
+              “La viña del Señor es su pueblo”.</p>
+          </div>
+        </article>
+        <article class="zona-card" data-reveal>
+          <img class="zona-card__img" src="assets/img/cultura/parroquia-santa-teresita.jpg"
+            alt="Fachada rosada de la Parroquia Santa Teresita del Niño Jesús de Orán, con su torre y palmeras" loading="lazy" decoding="async" />
+          <div class="zona-card__body">
+            <h3>Parroquia Santa Teresita</h3>
+            <p>Dedicada a <strong>Santa Teresita del Niño Jesús</strong>, se reconoce por su esbelta
+              torre campanario y las palmeras que la rodean.</p>
+          </div>
+        </article>
+        <article class="zona-card" data-reveal>
+          <img class="zona-card__img" src="assets/img/cultura/iglesia-lujan.jpg"
+            alt="Imagen de Nuestra Señora de Luján, con manto celeste y blanco" loading="lazy" decoding="async" />
+          <div class="zona-card__body">
+            <h3>Nuestra Señora de Luján</h3>
+            <p>Bajo la advocación de la <strong>patrona de la Argentina</strong>, reúne a la
+              comunidad en torno a la devoción mariana, tan arraigada en Orán.</p>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -439,10 +577,176 @@
       </div>
     </section>
 
+    <!-- ======================= RECORRIDO TURÍSTICO ======================= -->
+    <section class="section section--editorial" id="recorrido">
+      <header class="section__head section__head--center">
+        <span class="section__index">10 — Qué visitar</span>
+        <h2 class="section__title">Recorrido Turístico por Orán</h2>
+        <p class="section__intro">
+          Un paseo por los lugares con más historia e identidad de San Ramón de la Nueva Orán.
+          La mayoría están a pocas cuadras, en torno al casco céntrico.
+        </p>
+      </header>
+
+      <div class="zonas">
+        <article class="zona-card" data-reveal>
+          <img class="zona-card__img" src="assets/img/cultura/oran-plaza.jpg"
+            alt="Plaza arbolada de San Ramón de la Nueva Orán con bancos y caminos" loading="lazy" decoding="async" />
+          <div class="zona-card__body">
+            <h3>Las plazas</h3>
+            <p>La <strong>Plaza San Martín</strong> es el corazón de la ciudad: allí se montan el
+              escenario de “Las Voces de Orán”, las ferias de artesanos y la Fiesta de las
+              Colectividades. La <strong>Plaza General Pizarro</strong> suma árboles añosos y
+              fuentes, y la <strong>Plaza Santa Marta</strong> rinde homenaje a los pueblos
+              originarios.</p>
+          </div>
+        </article>
+
+        <article class="zona-card" data-reveal>
+          <img class="zona-card__img" src="assets/img/cultura/guemes-oran.jpg"
+            alt="Monumento ecuestre al General Martín Miguel de Güemes en Orán, sobre una base de piedra" loading="lazy" decoding="async" />
+          <div class="zona-card__body">
+            <h3>Monumento al Gral. Güemes</h3>
+            <p>Homenaje a <strong>Martín Miguel de Güemes</strong>, el héroe gaucho que defendió la
+              frontera norte durante la independencia. Es uno de los monumentos más importantes de
+              Orán y se encuentra cerca de la <strong>Iglesia Virgen del Valle</strong>, en el
+              barrio Güemes.</p>
+          </div>
+        </article>
+
+        <article class="zona-card" data-reveal>
+          <img class="zona-card__img" src="assets/img/cultura/oran-casa-cultura.webp"
+            alt="Edificio de la Casa de la Cultura de San Ramón de la Nueva Orán" loading="lazy" decoding="async" />
+          <div class="zona-card__body">
+            <h3>Casa de la Cultura</h3>
+            <p>Creada en <strong>1983</strong>, es el centro de la vida cultural oranense: ofrece
+              talleres, anfiteatro, salas de exposición, una <strong>biblioteca con Punto
+              Digital</strong> y un <strong>cine INCAA con proyección 3D</strong> que estrena en
+              simultáneo con todo el país.</p>
+          </div>
+        </article>
+
+        <article class="zona-card" data-reveal>
+          <img class="zona-card__img" src="assets/img/cultura/oran-museo.jpg"
+            alt="Museo Regional de Orán: edificio de piedra con cartel ferroviario y maquinaria antigua" loading="lazy" decoding="async" />
+          <div class="zona-card__body">
+            <h3>Museo Regional de Orán</h3>
+            <p>Conserva la historia y la arqueología de la zona: <strong>piezas de culturas
+              indígenas</strong>, objetos del período colonial, armamento histórico y elementos de
+              la antigua navegación por el <strong>río Bermejo</strong>.</p>
+          </div>
+        </article>
+
+        <article class="zona-card" data-reveal>
+          <img class="zona-card__img" src="assets/img/cultura/oran-calle.jpg"
+            alt="Calle del casco céntrico de Orán con veredas arboladas y comercios" loading="lazy" decoding="async" />
+          <div class="zona-card__body">
+            <h3>El casco céntrico</h3>
+            <p>Alrededor de la plaza y de la <strong>Catedral</strong> se extiende la trama
+              fundacional, con comercios, instituciones y la vida cotidiana de los oranenses.
+              Un buen punto de partida para caminar la ciudad.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="recorrido-extra" data-reveal>
+        <h3 class="cult-text">Y muy cerca, la naturaleza</h3>
+        <p>Orán también es la puerta de entrada a paseos imperdibles de las Yungas y la zona:</p>
+        <ul class="chips">
+          <li>Quebrada del Oculto</li><li>Cañón del Portillo</li><li>Camino a San Andrés</li>
+          <li>Reserva Pintascayo</li><li>Río Bermejo</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ======================= JUEGOS PARA NIÑOS ======================= -->
+    <section class="section section--rios" id="juegos">
+      <header class="section__head section__head--center">
+        <span class="section__index">11 — Para los más chicos</span>
+        <h2 class="section__title">Juegos</h2>
+        <p class="section__intro">
+          Dos juegos para descubrir la cultura de Orán jugando: pintá una escena del norte y
+          encontrá las diferencias. ¡A divertirse!
+        </p>
+      </header>
+
+      <!-- JUEGO 1: COLOREAR (pincel sobre la lámina real) -->
+      <div class="juego" data-reveal>
+        <h3 class="juego__title">🎨 Colorear la feria del norte</h3>
+        <p class="juego__help">Elegí un color, ajustá el pincel y pintá la lámina con el mouse o el dedo.</p>
+        <div class="paint" id="colorear">
+          <div class="paint__bar" id="paint-palette" role="toolbar" aria-label="Colores y herramientas">
+            <button class="paint__color is-active" type="button" data-color="#e11d48" style="--c:#e11d48" aria-label="Rosa"></button>
+            <button class="paint__color" type="button" data-color="#ea580c" style="--c:#ea580c" aria-label="Naranja"></button>
+            <button class="paint__color" type="button" data-color="#eab308" style="--c:#eab308" aria-label="Amarillo"></button>
+            <button class="paint__color" type="button" data-color="#16a34a" style="--c:#16a34a" aria-label="Verde"></button>
+            <button class="paint__color" type="button" data-color="#0ea5e9" style="--c:#0ea5e9" aria-label="Celeste"></button>
+            <button class="paint__color" type="button" data-color="#7c3aed" style="--c:#7c3aed" aria-label="Violeta"></button>
+            <button class="paint__color" type="button" data-color="#a16207" style="--c:#a16207" aria-label="Marrón"></button>
+            <button class="paint__color" type="button" data-color="#1f2937" style="--c:#1f2937" aria-label="Gris oscuro"></button>
+            <span class="paint__sep" aria-hidden="true"></span>
+            <button class="paint__tool is-active" type="button" data-tool="fill"  title="Rellenar" aria-label="Balde (rellenar)">🪣</button>
+            <button class="paint__tool" type="button" data-tool="brush" title="Pincel" aria-label="Pincel">🖌️</button>
+            <button class="paint__tool" type="button" data-tool="erase" title="Borrador" aria-label="Borrador">⌫</button>
+            <label class="paint__size">Grosor
+              <input type="range" id="paint-size" min="6" max="46" value="22" aria-label="Grosor del pincel" />
+            </label>
+            <span class="paint__sep" aria-hidden="true"></span>
+            <button class="btn-juego btn-juego--ghost" type="button" id="paint-undo">↶ Deshacer</button>
+            <button class="btn-juego" type="button" id="paint-clear">Borrar todo</button>
+          </div>
+          <div class="paint__stage" id="paint-stage">
+            <canvas id="paint-canvas"></canvas>
+            <img id="paint-line" class="paint__line" src="assets/img/cultura/colorear-feria.jpg"
+              alt="Lámina para colorear: una feria del norte con gente vendiendo comidas regionales"
+              decoding="async" />
+          </div>
+          <p class="paint__tip">Consejo: con el <strong>balde</strong> 🪣 tocá un espacio para rellenarlo; con el <strong>pincel</strong> 🖌️ pintás libremente.</p>
+        </div>
+      </div>
+
+      <!-- JUEGO 2: BUSCAR LAS DIFERENCIAS (fotos reales de la catedral) -->
+      <div class="juego" data-reveal>
+        <h3 class="juego__title">🔍 Encontrá las 9 diferencias</h3>
+        <p class="juego__help">
+          La foto de la <strong>derecha</strong> es la Catedral de Orán, pero le cambiaron y
+          agregaron <strong>9 cosas</strong>. Comparala con la de la izquierda y tocá en la de la
+          derecha cada diferencia que encuentres.
+          <span class="dif__contador" id="dif-contador">0 / 9</span>
+        </p>
+        <div class="diferencias" id="diferencias">
+          <figure class="dif-foto">
+            <span class="dif-img-wrap">
+              <img src="assets/img/cultura/dif-catedral-a.jpg" alt="Catedral de Orán, foto original"
+                loading="lazy" decoding="async" />
+            </span>
+            <figcaption>Original</figcaption>
+          </figure>
+          <figure class="dif-foto">
+            <span class="dif-img-wrap dif-img-wrap--juego">
+              <img src="assets/img/cultura/dif-catedral-b.jpg"
+                alt="Catedral de Orán con elementos cambiados para el juego" loading="lazy" decoding="async" />
+              <button class="dif-hot" type="button" style="left:12.5%;top:60%" data-hint="Reloj en la torre"></button>
+              <button class="dif-hot" type="button" style="left:13%;top:46%"   data-hint="Ventana de la torre"></button>
+              <button class="dif-hot" type="button" style="left:42%;top:68%"   data-hint="Panel solar"></button>
+              <button class="dif-hot" type="button" style="left:39%;top:87%"   data-hint="Flores de colores"></button>
+              <button class="dif-hot" type="button" style="left:80%;top:70%"   data-hint="Ventana triangular"></button>
+              <button class="dif-hot" type="button" style="left:58.5%;top:62%" data-hint="Ventana redonda"></button>
+              <button class="dif-hot" type="button" style="left:61%;top:49%"   data-hint="Cruz blanca"></button>
+              <button class="dif-hot" type="button" style="left:68%;top:83%"   data-hint="Flores blancas"></button>
+              <button class="dif-hot" type="button" style="left:87%;top:89%"   data-hint="Basurero"></button>
+            </span>
+            <figcaption>¿Qué cambió? Tocá las 9 diferencias</figcaption>
+          </figure>
+        </div>
+        <p class="dif__ok" id="dif-ok" hidden>🎉 ¡Muy bien! Encontraste las 9 diferencias.</p>
+      </div>
+    </section>
+
     <!-- ======================= IDENTIDAD (CIERRE) ======================= -->
     <section class="section section--manifiesto" id="identidad">
       <header class="section__head section__head--center">
-        <span class="section__index">10 — Cierre</span>
+        <span class="section__index">12 — Cierre</span>
         <h2 class="section__title">Identidad Cultural Oranense</h2>
       </header>
       <div class="cult-split" data-reveal style="align-items:center">

@@ -681,34 +681,243 @@ function initNav() {
   });
 }
 
-/* ============== 8. CURSOR QUE SIGUE AL MOUSE (solo punto, GPU only) ============== */
-function initCursor() {
-  // Solo en dispositivos con puntero fino y si no se pidió menos movimiento.
-  if (!window.matchMedia('(pointer: fine)').matches) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+/* ============ 9. JUEGO: COLOREAR (pincel sobre la lámina, canvas) ============ */
+function initColorear() {
+  const stage = document.getElementById('paint-stage');
+  const canvas = document.getElementById('paint-canvas');
+  const line = document.getElementById('paint-line');
+  const palette = document.getElementById('paint-palette');
+  if (!stage || !canvas || !line || !palette) return;
 
-  // Ocultamos el puntero nativo y lo reemplazamos por un único punto.
-  document.documentElement.classList.add('has-cursor');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  let color = '#e11d48';
+  let size = 22;
+  let tool = 'fill';            // 'fill' | 'brush' | 'erase'
+  let blocked = null;           // máscara: 1 = línea del dibujo (no se pinta encima)
+  const undo = [];              // pila de estados para "deshacer"
 
-  const dot = el('div', { className: 'cursor cursor--dot' });
-  document.body.append(dot);
+  // Dimensiona el lienzo a la resolución de la lámina (tope 1000px) y calcula la
+  // máscara de líneas leyendo qué píxeles son oscuros.
+  const setup = () => {
+    const w = line.naturalWidth || 900, h = line.naturalHeight || 650;
+    const scale = Math.min(1, 1000 / w);
+    canvas.width = Math.round(w * scale);
+    canvas.height = Math.round(h * scale);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);   // fondo blanco (el dibujo va arriba con multiply)
+    try {
+      const off = document.createElement('canvas');
+      off.width = canvas.width; off.height = canvas.height;
+      const octx = off.getContext('2d', { willReadFrequently: true });
+      octx.drawImage(line, 0, 0, canvas.width, canvas.height);
+      const d = octx.getImageData(0, 0, canvas.width, canvas.height).data;
+      blocked = new Uint8Array(canvas.width * canvas.height);
+      for (let i = 0, p = 0; i < d.length; i += 4, p++) {
+        const lum = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+        blocked[p] = lum < 120 ? 1 : 0;                // línea oscura → tope del relleno
+      }
+    } catch (e) { blocked = null; }                    // si no se puede leer, el balde se desactiva suave
+  };
+  if (line.complete && line.naturalWidth) setup();
+  else line.addEventListener('load', setup, { once: true });
 
-  window.addEventListener('mousemove', (e) => {
-    // El punto sigue al mouse al instante (GPU: solo transform).
-    dot.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-    dot.classList.add('is-on');
-  }, { passive: true });
+  const pushUndo = () => {
+    try { undo.push(ctx.getImageData(0, 0, canvas.width, canvas.height)); if (undo.length > 12) undo.shift(); }
+    catch (e) {}
+  };
+  const hexRgb = (h) => { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
 
-  // Al salir de la ventana, ocultamos el cursor propio.
-  document.addEventListener('mouseleave', () => dot.classList.remove('is-on'));
+  // Coordenadas de píxel del lienzo a partir del evento de puntero.
+  const pos = (e) => {
+    const r = canvas.getBoundingClientRect();
+    return {
+      x: Math.round((e.clientX - r.left) * (canvas.width / r.width)),
+      y: Math.round((e.clientY - r.top) * (canvas.height / r.height)),
+    };
+  };
 
-  // Crece al pasar sobre elementos interactivos (delegación → cubre lo dinámico).
-  const sel = 'a, button, .fauna-card, .circuito-card, .flora-item, .filtro-btn, .sumario__link';
-  document.addEventListener('mouseover', (e) => {
-    if (e.target.closest(sel)) dot.classList.add('is-active');
+  // Relleno por difusión (scanline) que respeta las líneas del dibujo.
+  const floodFill = (sx, sy) => {
+    const W = canvas.width, H = canvas.height;
+    if (sx < 0 || sy < 0 || sx >= W || sy >= H) return;
+    const start = sy * W + sx;
+    if (blocked && blocked[start]) return;             // no rellenar sobre una línea
+    const img = ctx.getImageData(0, 0, W, H), d = img.data;
+    const [fr, fg, fb] = (tool === 'erase') ? [255, 255, 255] : hexRgb(color);
+    const si = start * 4, tr = d[si], tg = d[si + 1], tb = d[si + 2];
+    if (tr === fr && tg === fg && tb === fb) return;
+    const match = (p) => {
+      if (blocked && blocked[p]) return false;
+      const k = p * 4;
+      return Math.abs(d[k] - tr) < 28 && Math.abs(d[k + 1] - tg) < 28 && Math.abs(d[k + 2] - tb) < 28;
+    };
+    const stack = [start];
+    while (stack.length) {
+      const p = stack.pop();
+      const y = (p / W) | 0;
+      let x = p - y * W;
+      while (x >= 0 && match(y * W + x)) x--;
+      x++;
+      let up = false, down = false;
+      for (; x < W && match(y * W + x); x++) {
+        const k = (y * W + x) * 4; d[k] = fr; d[k + 1] = fg; d[k + 2] = fb; d[k + 3] = 255;
+        if (y > 0) { const u = (y - 1) * W + x; if (match(u)) { if (!up) { stack.push(u); up = true; } } else up = false; }
+        if (y < H - 1) { const dn = (y + 1) * W + x; if (match(dn)) { if (!down) { stack.push(dn); down = true; } } else down = false; }
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+  };
+
+  // Trazo del pincel.
+  let drawing = false, lastX = 0, lastY = 0;
+  const stroke = (x, y) => {
+    ctx.strokeStyle = (tool === 'erase') ? '#ffffff' : color;
+    ctx.lineWidth = size * (canvas.width / (canvas.clientWidth || canvas.width));
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+    lastX = x; lastY = y;
+  };
+
+  // --- Barra: colores y herramientas ---
+  const colors = palette.querySelectorAll('.paint__color');
+  const tools = palette.querySelectorAll('.paint__tool');
+  palette.addEventListener('click', (e) => {
+    const c = e.target.closest('.paint__color');
+    if (c) {
+      color = c.dataset.color;
+      colors.forEach((b) => b.classList.toggle('is-active', b === c));
+      if (tool === 'erase') { tool = 'fill'; tools.forEach((t) => t.classList.toggle('is-active', t.dataset.tool === 'fill')); }
+      return;
+    }
+    const t = e.target.closest('.paint__tool');
+    if (t) { tool = t.dataset.tool; tools.forEach((b) => b.classList.toggle('is-active', b === t)); }
   });
-  document.addEventListener('mouseout', (e) => {
-    if (e.target.closest(sel)) dot.classList.remove('is-active');
+  const sizeInput = document.getElementById('paint-size');
+  if (sizeInput) sizeInput.addEventListener('input', () => { size = Number(sizeInput.value); });
+  const clearBtn = document.getElementById('paint-clear');
+  if (clearBtn) clearBtn.addEventListener('click', () => {
+    pushUndo(); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  });
+  const undoBtn = document.getElementById('paint-undo');
+  if (undoBtn) undoBtn.addEventListener('click', () => { const s = undo.pop(); if (s) ctx.putImageData(s, 0, 0); });
+
+  // --- Interacción en el lienzo ---
+  canvas.addEventListener('pointerdown', (e) => {
+    const p = pos(e); pushUndo();
+    if (tool === 'fill') { floodFill(p.x, p.y); return; }
+    drawing = true; lastX = p.x; lastY = p.y; stroke(p.x + 0.01, p.y + 0.01);
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove', (e) => { if (drawing) { const p = pos(e); stroke(p.x, p.y); } });
+  const stop = () => { drawing = false; };
+  canvas.addEventListener('pointerup', stop);
+  canvas.addEventListener('pointercancel', stop);
+}
+
+/* ========== 10. JUEGO: BUSCAR LAS DIFERENCIAS (hotspots sobre foto) ========== */
+function initDiferencias() {
+  const cont = document.getElementById('diferencias');
+  const marcador = document.getElementById('dif-contador');
+  if (!cont || !marcador) return;
+
+  const hotspots = cont.querySelectorAll('.dif-hot');
+  const total = hotspots.length;
+  let encontradas = 0;
+  const ok = document.getElementById('dif-ok');
+
+  hotspots.forEach((h) => {
+    h.addEventListener('click', () => {
+      if (h.classList.contains('found')) return;
+      h.classList.add('found');
+      encontradas += 1;
+      marcador.textContent = `${encontradas} / ${total}`;
+      if (encontradas === total && ok) ok.hidden = false;
+    });
+  });
+}
+
+/* ============== 11. JUEGO: BOTANIGRAMA (crucigrama botánico) ============== */
+function initBotanigrama() {
+  const grid = document.getElementById('botani-grid');
+  if (!grid) return;
+
+  const SPINE = 'SUSTENTABILIDAD';
+  // row = posición (1-based) en SUSTENTABILIDAD donde cruza; idx = índice de la letra cruzada en la palabra
+  const ACROSS = [
+    { n: 1,  a: 'YUNGAS',       row: 2,  idx: 1 },
+    { n: 2,  a: 'NATIVAS',      row: 4,  idx: 2 },
+    { n: 3,  a: 'NATIVOS',      row: 7,  idx: 2 },
+    { n: 4,  a: 'ETNOBOTANICA', row: 9,  idx: 4 },
+    { n: 5,  a: 'ORAN',         row: 6,  idx: 3 },
+    { n: 6,  a: 'PACARA',       row: 8,  idx: 1 },
+    { n: 7,  a: 'BATATA',       row: 14, idx: 1 },
+    { n: 8,  a: 'CEDRO',        row: 5,  idx: 1 },
+    { n: 9,  a: 'PETERIBI',     row: 10, idx: 5 },
+    { n: 10, a: 'NATURALEZA',   row: 11, idx: 6 },
+  ];
+  const spineCol = Math.max(...ACROSS.map((w) => w.idx)) + 1;
+  const maxRight = Math.max(...ACROSS.map((w) => w.a.length - 1 - w.idx));
+  const COLS = spineCol + maxRight;
+  const ROWS = SPINE.length;
+
+  // Mapa de celdas
+  const cells = {};
+  for (let r = 1; r <= ROWS; r++) cells[`${r},${spineCol}`] = { letter: SPINE[r - 1], spine: true };
+  for (const w of ACROSS) {
+    const startCol = spineCol - w.idx;
+    for (let k = 0; k < w.a.length; k++) {
+      const c = startCol + k, key = `${w.row},${c}`;
+      if (!cells[key]) cells[key] = {};
+      cells[key].letter = w.a[k];
+      if (c === spineCol) cells[key].spine = true; else cells[key].input = true;
+      if (k === 0) cells[key].num = w.n;
+    }
+  }
+
+  grid.style.setProperty('--cols', COLS);
+  grid.innerHTML = '';
+  const inputs = [];
+  for (let r = 1; r <= ROWS; r++) {
+    for (let c = 1; c <= COLS; c++) {
+      const cell = cells[`${r},${c}`];
+      const div = el('div', { className: 'botani__cell' });
+      if (!cell) { div.classList.add('is-empty'); grid.append(div); continue; }
+      if (cell.num) div.append(el('span', { className: 'botani__num', textContent: String(cell.num) }));
+      if (cell.spine) {
+        div.classList.add('is-spine');
+        div.append(el('span', { className: 'botani__letter', textContent: cell.letter }));
+      } else if (cell.input) {
+        const inp = el('input', { className: 'botani__input', maxLength: 1 });
+        inp.dataset.sol = cell.letter;
+        inp.addEventListener('input', () => {
+          inp.value = inp.value.toUpperCase().replace(/[^A-ZÑ]/g, '');
+          inp.classList.remove('is-bad', 'is-good');
+        });
+        div.append(inp); inputs.push(inp);
+      }
+      grid.append(div);
+    }
+  }
+
+  const msg = document.getElementById('botani-msg');
+  const setMsg = (t) => { if (msg) msg.textContent = t; };
+  document.getElementById('botani-check')?.addEventListener('click', () => {
+    let ok = 0;
+    inputs.forEach((i) => {
+      const good = (i.value || '') === i.dataset.sol;
+      i.classList.toggle('is-good', good && i.value !== '');
+      i.classList.toggle('is-bad', !good && i.value !== '');
+      if (good) ok++;
+    });
+    setMsg(ok === inputs.length ? '🎉 ¡Completaste el botanigrama!' : `Llevás ${ok}/${inputs.length} casillas correctas.`);
+  });
+  document.getElementById('botani-solve')?.addEventListener('click', () => {
+    inputs.forEach((i) => { i.value = i.dataset.sol; i.classList.add('is-good'); i.classList.remove('is-bad'); });
+    setMsg('Solución completa.');
+  });
+  document.getElementById('botani-clear')?.addEventListener('click', () => {
+    inputs.forEach((i) => { i.value = ''; i.classList.remove('is-good', 'is-bad'); });
+    setMsg('');
   });
 }
 
@@ -724,12 +933,14 @@ function init() {
   initCountUp();
   initQuiz();
   initSopa();
+  initColorear();
+  initDiferencias();
+  initBotanigrama();
   initNav();
   initPrint();
-  // Los efectos de scroll y el cursor se enganchan tras poblar el DOM.
+  // Los efectos de scroll se enganchan tras poblar el DOM.
   initScrollReveal();
   initScrollEffects();
-  initCursor();
 }
 
 if (document.readyState === 'loading') {

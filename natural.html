@@ -351,6 +351,13 @@
         </p>
       </header>
 
+      <figure class="juego-ilustracion" data-reveal>
+        <img src="assets/img/hernan-yaguarete.jpg"
+          alt="Dibujo humorístico: una persona corre escapando de un yaguareté junto a un cartel de “No pasar”, con las Yungas de fondo"
+          loading="lazy" decoding="async" />
+        <figcaption>El yaguareté: dueño y señor de las Yungas. ¡Mejor mirarlo de lejos!</figcaption>
+      </figure>
+
       <!-- Tarjeta del quiz: la pueblan/manejan desde JS (initQuiz) -->
       <div class="quiz" id="quiz" data-reveal>
         <!-- Marcador de puntaje (accesible) -->
@@ -382,7 +389,8 @@
       <!-- Sopa de letras: plantas nativas del catálogo botánico -->
       <div class="sopa" id="sopa" data-reveal>
         <div class="sopa__head">
-          <h3 class="sopa__title">Sopa de letras · Plantas nativas</h3>
+          <img class="sopa__banner" src="assets/img/sopa-vegetales-titulo.png"
+            alt="Sopa de vegetales — ¿buscamos?" loading="lazy" decoding="async" />
           <p class="sopa__hint">
             Arrastrá (o tocá y deslizá) sobre las letras para marcar las plantas del
             catálogo botánico. Pueden estar en horizontal, vertical o diagonal… ¡y al revés!
@@ -400,6 +408,38 @@
             </p>
             <button type="button" class="sopa__reset" id="sopa-reset">↺ Nueva sopa</button>
           </aside>
+        </div>
+      </div>
+
+      <!-- Botanigrama: crucigrama botánico (grilla generada por JS) -->
+      <div class="botani" id="botani" data-reveal>
+        <img class="botani__banner" src="assets/img/botanigrama.png"
+          alt="Botanigrama: completá el crucigrama con la información de la revista" loading="lazy" decoding="async" />
+        <p class="botani__intro">
+          La palabra vertical <strong>SUSTENTABILIDAD</strong> ya está puesta como ayuda.
+          Completá las palabras horizontales (1 a 10) con las pistas. Después tocá
+          <strong>Verificar</strong>.
+        </p>
+        <div class="botani__layout">
+          <div class="botani__grid" id="botani-grid" role="grid" aria-label="Crucigrama botánico"></div>
+          <ol class="botani__clues" id="botani-clues" aria-label="Pistas del botanigrama">
+            <li value="1">Selva subtropical, zona Orán.</li>
+            <li value="2">Clase de plantas en que se basa el listado.</li>
+            <li value="3">Clase de árboles en que se basa el listado.</li>
+            <li value="4">Disciplina que estudia el conocimiento, el rol, el significado y el uso de los vegetales.</li>
+            <li value="5">Ciudad principal en que se basa la información.</li>
+            <li value="6">Árbol — <em>Enterolobium contortisiliquum</em>.</li>
+            <li value="7">Trepadora — <em>Ipomoea batatas</em>.</li>
+            <li value="8">Árbol — <em>Cedrela lilloi</em>.</li>
+            <li value="9">Árbol — <em>Cordia trichotoma</em>.</li>
+            <li value="10">Primordial: la conservación de la…</li>
+          </ol>
+        </div>
+        <div class="botani__controls">
+          <button type="button" class="botani__btn" id="botani-check">Verificar</button>
+          <button type="button" class="botani__btn botani__btn--ghost" id="botani-solve">Ver solución</button>
+          <button type="button" class="botani__btn botani__btn--ghost" id="botani-clear">Borrar</button>
+          <span class="botani__msg" id="botani-msg" role="status"></span>
         </div>
       </div>
 

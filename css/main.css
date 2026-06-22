@@ -198,42 +198,6 @@ h1, h2, h3, p, a, li, blockquote { overflow-wrap: break-word; }
 .print-btn:hover { transform: translateY(-3px) scale(1.04); background: #963f22; }
 .print-btn:active { transform: scale(0.97); }
 
-/* ============================== 3b. CURSOR PERSONALIZADO ============================== */
-/* Oculta el puntero nativo cuando el cursor propio está activo */
-.has-cursor,
-.has-cursor * { cursor: none !important; }
-
-.cursor {
-  position: fixed;
-  top: 0; left: 0;
-  z-index: 9999;
-  pointer-events: none;          /* nunca bloquea clics */
-  opacity: 0;
-  border-radius: 50%;
-  will-change: transform;
-}
-.cursor.is-on { opacity: 1; }
-
-/* Punto único: pequeño y nítido, sigue al mouse al instante.
-   mix-blend-mode lo hace visible sobre cualquier fondo (claro u oscuro). */
-.cursor--dot {
-  width: 12px; height: 12px;
-  margin: -6px 0 0 -6px;
-  background: #fff;
-  mix-blend-mode: difference;
-  transition: width 0.2s var(--ease), height 0.2s var(--ease),
-              margin 0.2s var(--ease);
-}
-/* Sobre elementos interactivos crece un poco para dar feedback */
-.cursor--dot.is-active {
-  width: 24px; height: 24px;
-  margin: -12px 0 0 -12px;
-}
-/* En táctil o con menos movimiento, no se usa (y el puntero nativo sigue visible) */
-@media (hover: none), (prefers-reduced-motion: reduce) {
-  .cursor { display: none !important; }
-}
-
 /* ============================== 4. HEADER / NAV ============================== */
 .site-header {
   position: sticky;
@@ -1652,3 +1616,217 @@ h1, h2, h3, p, a, li, blockquote { overflow-wrap: break-word; }
   .header__brand-text { display: none; }   /* en móvil, solo el logo para dar lugar */
   .rev-switch__item { padding: .35rem .6rem; font-size: .78rem; }
 }
+
+/* Ficha de dato destacado (p. ej. biografía del fundador) */
+.cult-dato {
+  margin-top: 1rem;
+  padding: .9rem 1.1rem;
+  background: color-mix(in srgb, var(--tierra-roja) 8%, var(--crema-2));
+  border-left: 4px solid var(--tierra-roja);
+  border-radius: 0 12px 12px 0;
+  font-size: .95rem; line-height: 1.6; color: var(--tinta-suave);
+}
+
+/* ============================== RECORRIDO TURÍSTICO ============================== */
+.zonas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: clamp(1rem, 3vw, 1.6rem);
+  margin: 0 auto;
+  max-width: var(--maxw);
+}
+.zona-card {
+  display: flex; flex-direction: column;
+  background: var(--crema-2);
+  border: 1px solid color-mix(in srgb, var(--tinta) 8%, transparent);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.zona-card:hover { transform: translateY(-5px); box-shadow: 0 14px 32px rgba(60, 24, 12, 0.16); }
+.zona-card__img {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  display: block; background: color-mix(in srgb, var(--tierra-roja) 12%, transparent);
+}
+.zona-card__body { padding: 1.1rem 1.25rem 1.4rem; }
+.zona-card__body h3 {
+  font-family: var(--serif); font-size: 1.3rem; line-height: 1.15;
+  color: var(--tierra-roja); margin-bottom: .5rem;
+}
+.zona-card__body p { color: var(--tinta-suave); font-size: .96rem; line-height: 1.55; }
+.recorrido-extra {
+  max-width: var(--maxw); margin: clamp(1.6rem, 4vw, 2.4rem) auto 0;
+  text-align: center;
+}
+.recorrido-extra .chips { justify-content: center; }
+
+/* ============================== JUEGOS (niños) ============================== */
+.juego {
+  max-width: 760px; margin: 0 auto clamp(2rem, 5vw, 3rem);
+  background: var(--crema); border-radius: 20px;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid color-mix(in srgb, var(--tinta) 9%, transparent);
+}
+.juego__title {
+  font-family: var(--serif); font-size: clamp(1.3rem, 3vw, 1.7rem);
+  color: var(--tierra-roja); text-align: center; margin-bottom: .4rem;
+}
+.juego__help { text-align: center; color: var(--tinta-suave); font-size: .95rem; margin-bottom: 1.1rem; }
+
+.btn-juego {
+  background: var(--tierra-roja); color: #fff; border: none;
+  padding: .55rem 1.4rem; border-radius: 999px; font-weight: 700;
+  font-size: .9rem; cursor: pointer; transition: filter .2s var(--ease);
+}
+.btn-juego:hover { filter: brightness(1.08); }
+
+/* --- Colorear (pincel sobre la lámina) --- */
+.paint { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.paint__bar {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .5rem;
+}
+.paint__color {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--c);
+  border: 3px solid #fff; box-shadow: 0 0 0 1px color-mix(in srgb, var(--tinta) 22%, transparent);
+  cursor: pointer; transition: transform .15s var(--ease);
+  display: inline-flex; align-items: center; justify-content: center; font-size: 1.05rem; color: #555;
+}
+.paint__color:hover { transform: scale(1.12); }
+.paint__color.is-active { transform: scale(1.2); box-shadow: 0 0 0 3px var(--tierra-roja); }
+.paint__color--erase { background: #fff; }
+.paint__size {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .85rem; color: var(--tinta-suave);
+}
+.paint__size input { accent-color: var(--tierra-roja); }
+.paint__tool {
+  width: 38px; height: 38px; border-radius: 12px; font-size: 1.15rem; line-height: 1;
+  background: var(--crema); cursor: pointer;
+  border: 2px solid color-mix(in srgb, var(--tinta) 18%, transparent);
+  transition: transform .15s var(--ease), border-color .15s var(--ease), background .15s var(--ease);
+}
+.paint__tool:hover { transform: translateY(-1px); }
+.paint__tool.is-active { border-color: var(--tierra-roja); background: color-mix(in srgb, var(--tierra-roja) 12%, var(--crema)); }
+.paint__sep { width: 1px; height: 28px; background: color-mix(in srgb, var(--tinta) 18%, transparent); }
+.btn-juego--ghost { background: transparent; color: var(--tierra-roja); border: 2px solid var(--tierra-roja); }
+.btn-juego--ghost:hover { background: color-mix(in srgb, var(--tierra-roja) 10%, transparent); filter: none; }
+.paint__tip { text-align: center; font-size: .82rem; color: var(--tinta-suave); margin-top: .2rem; }
+.paint__stage {
+  position: relative; width: 100%; max-width: 560px; line-height: 0;
+  border-radius: 14px; overflow: hidden;
+  border: 2px solid color-mix(in srgb, var(--tinta) 14%, transparent);
+  background: #fff; touch-action: none;
+}
+.paint__stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+.paint__line {
+  position: relative; display: block; width: 100%; height: auto;
+  mix-blend-mode: multiply; pointer-events: none; user-select: none;
+}
+
+/* --- Buscar las diferencias (fotos) --- */
+.diferencias {
+  display: grid; grid-template-columns: 1fr 1fr; align-items: start;
+  gap: clamp(.6rem, 2vw, 1rem); max-width: 820px; margin: 0 auto;
+}
+.dif-foto { margin: 0; }
+.dif-img-wrap { position: relative; display: block; line-height: 0; }
+.dif-foto img {
+  width: 100%; height: auto; display: block;
+  border-radius: 12px; border: 2px solid color-mix(in srgb, var(--tinta) 14%, transparent);
+}
+.dif-foto figcaption {
+  text-align: center; font-size: .82rem; font-weight: 600;
+  color: var(--tinta-suave); margin-top: .35rem; line-height: 1.3;
+}
+.dif-img-wrap--juego { touch-action: manipulation; cursor: pointer; }
+.dif-hot {
+  position: absolute; width: 11%; aspect-ratio: 1; transform: translate(-50%, -50%);
+  border-radius: 50%; border: 0; background: transparent; cursor: pointer; padding: 0;
+}
+.dif-hot.found {
+  border: 4px solid #16a34a;
+  box-shadow: 0 0 12px rgba(22, 163, 74, .6);
+  background: rgba(22, 163, 74, .15);
+  animation: difpop .3s var(--ease); cursor: default;
+}
+@keyframes difpop { from { transform: translate(-50%, -50%) scale(.4); } to { transform: translate(-50%, -50%) scale(1); } }
+@media (max-width: 560px) {
+  .diferencias { grid-template-columns: 1fr; max-width: 460px; }
+}
+.dif__contador {
+  display: inline-block; background: var(--tierra-roja); color: #fff;
+  font-weight: 700; padding: .1rem .7rem; border-radius: 999px; margin-left: .4rem;
+}
+.dif__ok { text-align: center; font-weight: 700; color: #16a34a; margin-top: 1rem; font-size: 1.05rem; }
+
+@media (max-width: 420px) {
+  .paint__color { width: 30px; height: 30px; }
+}
+
+/* ============================== BOTANIGRAMA (crucigrama) ============================== */
+.botani { max-width: 940px; margin: clamp(2rem, 5vw, 3rem) auto 0; }
+.botani__banner { display: block; width: 100%; max-width: 720px; height: auto; margin: 0 auto .6rem; }
+.botani__intro { text-align: center; color: var(--tinta-suave); font-size: .95rem; margin-bottom: 1.2rem; }
+.botani__layout {
+  display: flex; flex-wrap: wrap; gap: clamp(1rem, 3vw, 2rem);
+  align-items: flex-start; justify-content: center;
+}
+.botani__grid {
+  --bs: 30px;
+  display: grid; grid-template-columns: repeat(var(--cols), var(--bs));
+  grid-auto-rows: var(--bs); gap: 2px;
+  max-width: 100%; overflow-x: auto; padding-bottom: 4px;
+}
+.botani__cell { position: relative; width: var(--bs); height: var(--bs); }
+.botani__cell.is-empty { background: transparent; }
+.botani__cell.is-spine {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--verde-yunga); color: #fff; font-weight: 800;
+  border-radius: 5px; font-size: calc(var(--bs) * .55);
+}
+.botani__input {
+  width: 100%; height: 100%; border: 1.5px solid color-mix(in srgb, var(--tinta) 30%, transparent);
+  border-radius: 5px; background: #fff; text-align: center; padding: 0;
+  font-weight: 700; font-size: calc(var(--bs) * .5); color: var(--tinta);
+  text-transform: uppercase; cursor: text;
+}
+.botani__input:focus { outline: 2px solid var(--dorado); outline-offset: -1px; border-color: var(--dorado); }
+.botani__input.is-good { background: #dcfce7; border-color: #16a34a; color: #15803d; }
+.botani__input.is-bad  { background: #fee2e2; border-color: #dc2626; color: #b91c1c; }
+.botani__num {
+  position: absolute; top: 0; left: 1px; z-index: 1;
+  font-size: calc(var(--bs) * .32); font-weight: 700; color: var(--tierra-roja); line-height: 1;
+}
+.botani__clues {
+  flex: 1 1 280px; min-width: 240px; max-width: 420px;
+  margin: 0; padding-left: 1.3rem; color: var(--tinta-suave);
+  font-size: .92rem; line-height: 1.5;
+}
+.botani__clues li { margin-bottom: .4rem; }
+.botani__controls {
+  display: flex; flex-wrap: wrap; gap: .6rem; align-items: center;
+  justify-content: center; margin-top: 1.2rem;
+}
+.botani__btn {
+  background: var(--verde-yunga); color: #fff; border: none;
+  padding: .55rem 1.3rem; border-radius: 999px; font-weight: 700;
+  font-size: .9rem; cursor: pointer; transition: filter .2s var(--ease);
+}
+.botani__btn:hover { filter: brightness(1.08); }
+.botani__btn--ghost { background: transparent; color: var(--verde-yunga); border: 2px solid var(--verde-yunga); }
+.botani__btn--ghost:hover { background: color-mix(in srgb, var(--verde-yunga) 10%, transparent); filter: none; }
+.botani__msg { font-weight: 700; color: var(--verde-yunga); font-size: .95rem; }
+@media (max-width: 600px) { .botani__grid { --bs: 22px; } }
+@media (max-width: 380px) { .botani__grid { --bs: 18px; } }
+
+/* Ilustración humorística (Hernán y el yaguareté) */
+.juego-ilustracion { margin: 0 auto clamp(1.5rem, 4vw, 2.5rem); max-width: 620px; text-align: center; }
+.juego-ilustracion img {
+  width: 100%; height: auto; border-radius: 16px; display: block;
+  box-shadow: 0 10px 28px rgba(60, 40, 12, 0.14);
+}
+.juego-ilustracion figcaption {
+  margin-top: .6rem; font-size: .9rem; color: var(--tinta-suave); font-style: italic;
+}
+/* Título ilustrado de la sopa de letras */
+.sopa__banner { display: block; width: 100%; max-width: 720px; height: auto; margin: 0 auto .4rem; }
