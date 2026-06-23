@@ -52,14 +52,41 @@
     <section class="hero" id="hero">
       <div class="hero__media" data-parallax aria-hidden="true"></div>
       <div class="hero__overlay"></div>
+
+      <!-- Emojis flotantes decorativos (animación CSS) -->
+      <div class="hero__floaties" aria-hidden="true">
+        <span style="--d:0s;  --x:12%; --s:1.5rem">🎭</span>
+        <span style="--d:3s;  --x:78%; --s:1.8rem">💃</span>
+        <span style="--d:6s;  --x:35%; --s:1.3rem">🪘</span>
+        <span style="--d:1.5s;--x:60%; --s:1.5rem">🌽</span>
+        <span style="--d:4.5s;--x:88%; --s:1.4rem">🎉</span>
+      </div>
+
       <div class="hero__content">
+        <!-- Logo del instituto en la portada -->
+        <img class="hero__seal" src="assets/img/ies-logo.png"
+          alt="Instituto de Enseñanza Superior Dr. Alfredo Loutaif — Orán, Salta" />
         <p class="hero__kicker">Revista Cultural · Salta · Argentina</p>
-        <h1 class="hero__title">Raíces de <em>Orán</em></h1>
+        <h1 class="hero__title">San Ramón de la<br /><em>Nueva Orán</em></h1>
         <p class="hero__lead">
-          Tradiciones y costumbres de San Ramón de la Nueva Orán: fe, identidad,
-          folclore y carnaval — el patrimonio vivo del norte argentino.
+          Tradiciones y costumbres del norte argentino: fe, identidad, folclore y
+          carnaval — el patrimonio cultural vivo de su gente.
         </p>
         <a href="#indice" class="hero__scroll">Entrar a las raíces ↓</a>
+      </div>
+
+      <!-- Ticker de curiosidades culturales (se duplica por JS para el loop) -->
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker__track" id="ticker">
+          <span class="ticker__item">⛪ Orán fue fundada el 31 de agosto de 1794</span>
+          <span class="ticker__item">🙏 San Ramón Nonato es el santo patrono de la ciudad</span>
+          <span class="ticker__item">🎭 Tinkus y caporales encienden el carnaval</span>
+          <span class="ticker__item">💃 Los Corsos Color se bailan en el Corsódromo</span>
+          <span class="ticker__item">🪘 La zamba y la chacarera marcan el folclore salteño</span>
+          <span class="ticker__item">🌽 El tamal se cocina envuelto en chala de maíz</span>
+          <span class="ticker__item">🌎 Cada 1° de agosto se celebra a la Pachamama</span>
+          <span class="ticker__item">🏛️ La Casa de la Cultura tiene cine INCAA con 3D</span>
+        </div>
       </div>
     </section>
 
@@ -317,8 +344,8 @@
       </header>
       <div class="zonas">
         <article class="zona-card" data-reveal>
-          <img class="zona-card__img" src="assets/img/cultura/catedral-oran.jpg"
-            alt="Catedral de Orán" loading="lazy" decoding="async" />
+          <img class="zona-card__img" src="assets/img/cultura/san-ramon-nonato.jpg"
+            alt="Imagen de San Ramón Nonato con flores, frente al campanario de la catedral de Orán" loading="lazy" decoding="async" />
           <div class="zona-card__body">
             <h3>Catedral de Orán</h3>
             <p>Sede de la diócesis. Custodia las imágenes de <strong>San Ramón Nonato</strong> y de
@@ -433,36 +460,112 @@
 
     <!-- ======================= GASTRONOMÍA ======================= -->
     <section class="section section--editorial" id="gastronomia">
-      <header class="section__head">
+      <header class="section__head section__head--center">
         <span class="section__index">06 — Sabores del norte</span>
-        <h2 class="section__title">Gastronomía Oranense</h2>
+        <h2 class="section__title">Gastronomía Regional</h2>
+        <p class="section__intro">
+          La gastronomía del <strong>Noroeste Argentino (NOA)</strong> es parte del patrimonio
+          cultural de la región. Sus sabores y técnicas se transmiten de generación en generación,
+          conservando tradiciones de los pueblos originarios y aportes criollos. Entre sus
+          ingredientes más usados están el <strong>maíz</strong>, la <strong>papa</strong>, la
+          <strong>carne vacuna</strong> y las especias típicas de la zona.
+        </p>
       </header>
+
       <div class="cult-split cult-split--media" data-reveal>
         <div class="cult-text">
-          <p>
-            La cocina de Orán es herencia de la fusión <strong>criolla, andina y de monte</strong>.
-            En las mesas y en las ferias de las fiestas no faltan platos que se preparan, muchas
-            veces, a leña y en grandes ollas para compartir:
-          </p>
-          <ul class="cult-list">
-            <li><strong>Empanadas salteñas</strong> — de carne cortada a cuchillo, jugosas, al horno de barro.</li>
-            <li><strong>Humita</strong> y <strong>tamales</strong> — a base de choclo y maíz, envueltos en chala.</li>
-            <li><strong>Locro</strong> — guiso de maíz, zapallo, porotos y carne, típico de las fechas patrias.</li>
-            <li><strong>Asado y cabrito</strong> — la carne a la llama, centro del encuentro familiar.</li>
-            <li><strong>Quesillo con miel de caña o arrope</strong>, y dulces regionales de fruta.</li>
-          </ul>
-          <p>
-            A esto se suman los frutos de las Yungas y de las chacras de la región —cítricos,
-            mango, banana y caña de azúcar— que dan a Orán una identidad gastronómica tropical
-            poco común en el resto del país.
+          <h3 class="cult-text">Tamales</h3>
+          <p>Masa de <strong>maíz</strong> rellena con carne vacuna o de pollo condimentada,
+            envuelta en <strong>hojas de chala</strong> y cocida en agua hirviendo. Infaltable en
+            festividades familiares, celebraciones patrias y reuniones comunitarias.</p>
+          <h3 class="cult-text">Humitas</h3>
+          <p>A base de <strong>choclo rallado</strong>, cebolla, queso y condimentos; se cocina en
+            olla o envuelta en las hojas del choclo. Suave y cremosa, representa la importancia del
+            maíz en los pueblos andinos desde tiempos ancestrales.</p>
+        </div>
+        <figure class="cult-figure">
+          <img src="assets/img/cultura/tamales.jpg"
+            alt="Tabla con tamales en chala, locro, empanadas y porotos sobre madera"
+            loading="lazy" decoding="async" />
+          <figcaption>Tamales, locro y empanadas: la mesa del NOA.</figcaption>
+        </figure>
+      </div>
+
+      <div class="cult-split" data-reveal>
+        <figure class="cult-figure">
+          <img src="assets/img/cultura/empanadas-noa.jpg"
+            alt="Empanadas del norte recién fritas servidas con salsa picante" loading="lazy" decoding="async" />
+          <figcaption>Empanadas fritas, infaltables en ferias y fiestas.</figcaption>
+        </figure>
+        <div class="cult-text">
+          <h3 class="cult-text">Empanadas</h3>
+          <p>Las del NOA se preparan con <strong>carne cortada a cuchillo</strong>, cebolla, papa,
+            huevo duro y condimentos. Cada provincia tiene su propia receta, lo que las vuelve una
+            verdadera expresión de identidad cultural.</p>
+          <h3 class="cult-text">Locro</h3>
+          <p>Uno de los platos más emblemáticos: <strong>maíz blanco</strong>, porotos, zapallo,
+            carne vacuna, cerdo y embutidos. Se cocina varias horas y se disfruta en fechas patrias
+            como el <strong>25 de Mayo</strong> y el <strong>9 de Julio</strong>.</p>
+        </div>
+      </div>
+
+      <div class="cult-split cult-split--media" data-reveal>
+        <div class="cult-text">
+          <h3 class="cult-text">Platos tradicionales</h3>
+          <p>La cocina regional suma una gran variedad de platos típicos: <strong>guiso de
+            maíz</strong>, <strong>carbonada</strong>, <strong>mote</strong>, <strong>chilcán</strong>
+            y preparaciones con productos locales, que reflejan la relación entre las comunidades y
+            los recursos naturales.</p>
+          <p class="cult-dato">
+            <strong>El chilcán</strong> es una preparación andina de <strong>harina de maíz
+            tostado</strong> (o de algarroba) mezclada con agua o leche, a veces endulzada con
+            azúcar o miel. Aportaba energía y se hacía con lo que había a mano: una costumbre
+            heredada de los pueblos originarios.
           </p>
         </div>
         <figure class="cult-figure">
-          <img src="assets/img/cultura/empanadas.jpg"
-            alt="Bandeja de empanadas argentinas recién fritas, doradas y con repulgue"
+          <img src="assets/img/cultura/asado.jpg"
+            alt="Plato regional con asado, chorizo, arroz, ensalada y tomate"
             loading="lazy" decoding="async" />
+          <figcaption>El asado y sus guarniciones, plato de encuentro.</figcaption>
         </figure>
       </div>
+
+      <!-- Receta destacada -->
+      <div class="receta" data-reveal>
+        <h3 class="receta__title">🥣 Receta destacada: Humita en olla</h3>
+        <div class="dos-cols">
+          <div>
+            <h4 class="receta__sub">Ingredientes</h4>
+            <ul class="cult-list">
+              <li>12 choclos frescos</li>
+              <li>1 cebolla grande</li>
+              <li>200 g de queso fresco</li>
+              <li>2 cucharadas de aceite</li>
+              <li>Sal y pimienta a gusto</li>
+              <li>Pimentón dulce</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="receta__sub">Preparación</h4>
+            <ol class="receta__pasos">
+              <li>Pelar los choclos y rallarlos o procesarlos.</li>
+              <li>Picar la cebolla y rehogarla en aceite hasta que quede transparente.</li>
+              <li>Agregar el choclo rallado y cocinar a fuego lento, revolviendo.</li>
+              <li>Condimentar con sal, pimienta y pimentón.</li>
+              <li>Incorporar el queso fresco en cubos.</li>
+              <li>Cocinar 20 a 30 minutos hasta que quede cremosa.</li>
+              <li>Servir caliente y disfrutar.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <blockquote class="cult-quote" data-reveal>
+        La gastronomía regional no solo es una forma de alimentación: es una manifestación cultural
+        que conserva historias, costumbres y saberes, y se vuelve un atractivo turístico y cultural
+        de gran valor.
+      </blockquote>
     </section>
 
     <!-- ======================= ARTESANÍAS ======================= -->
@@ -590,8 +693,8 @@
 
       <div class="zonas">
         <article class="zona-card" data-reveal>
-          <img class="zona-card__img" src="assets/img/cultura/oran-plaza.jpg"
-            alt="Plaza arbolada de San Ramón de la Nueva Orán con bancos y caminos" loading="lazy" decoding="async" />
+          <img class="zona-card__img" src="assets/img/cultura/plaza-pizarro-2.jpg"
+            alt="Entrada a la Plaza General Pizarro de Orán, con su cartel, arboleda y el monumento al fondo" loading="lazy" decoding="async" />
           <div class="zona-card__body">
             <h3>Las plazas</h3>
             <p>La <strong>Plaza San Martín</strong> es el corazón de la ciudad: allí se montan el

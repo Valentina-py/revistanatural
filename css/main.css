@@ -1627,6 +1627,26 @@ h1, h2, h3, p, a, li, blockquote { overflow-wrap: break-word; }
   font-size: .95rem; line-height: 1.6; color: var(--tinta-suave);
 }
 
+/* Receta destacada (gastronomía) */
+.receta {
+  max-width: var(--maxw); margin: clamp(1.6rem, 4vw, 2.4rem) auto 0;
+  background: color-mix(in srgb, var(--dorado) 8%, var(--crema-2));
+  border: 1px solid color-mix(in srgb, var(--tierra-roja) 20%, transparent);
+  border-radius: 18px; padding: clamp(1.2rem, 3vw, 2rem);
+}
+.receta__title {
+  font-family: var(--serif); font-size: clamp(1.3rem, 3vw, 1.7rem);
+  color: var(--tierra-roja); text-align: center; margin-bottom: 1.2rem;
+}
+.receta__sub {
+  font-family: var(--serif); font-size: 1.15rem; color: var(--verde-yunga);
+  margin-bottom: .5rem; border-bottom: 2px solid color-mix(in srgb, var(--tierra-roja) 30%, transparent);
+  padding-bottom: .25rem;
+}
+.tema-cultural .receta__sub { color: var(--tierra-roja); }
+.receta__pasos { margin: 0; padding-left: 1.3rem; color: var(--tinta-suave); line-height: 1.6; }
+.receta__pasos li { margin-bottom: .45rem; }
+
 /* ============================== RECORRIDO TURÍSTICO ============================== */
 .zonas {
   display: grid;

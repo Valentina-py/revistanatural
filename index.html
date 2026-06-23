@@ -48,7 +48,20 @@
     <section class="hero" id="hero">
       <div class="hero__media" data-parallax aria-hidden="true"></div>
       <div class="hero__overlay"></div>
+
+      <!-- Emojis flotantes decorativos (naturaleza + cultura) -->
+      <div class="hero__floaties" aria-hidden="true">
+        <span style="--d:0s;  --x:12%; --s:1.5rem">🌿</span>
+        <span style="--d:3s;  --x:78%; --s:1.7rem">🎭</span>
+        <span style="--d:6s;  --x:35%; --s:1.3rem">🦋</span>
+        <span style="--d:1.5s;--x:60%; --s:1.5rem">💃</span>
+        <span style="--d:4.5s;--x:88%; --s:1.4rem">🍃</span>
+      </div>
+
       <div class="hero__content">
+        <!-- Logo del instituto en la portada -->
+        <img class="hero__seal" src="assets/img/ies-logo.png"
+          alt="Instituto de Enseñanza Superior Dr. Alfredo Loutaif — Orán, Salta" />
         <p class="hero__kicker">Salta · Argentina · Norte argentino</p>
         <h1 class="hero__title">San Ramón de la<br /><em>Nueva Orán</em></h1>
         <p class="hero__lead">
@@ -56,6 +69,18 @@
           <strong>cultura</strong> viva de su gente. Recorré las dos revistas.
         </p>
         <a href="#revistas" class="hero__scroll">Elegí tu recorrido ↓</a>
+      </div>
+
+      <!-- Ticker: naturaleza + cultura (se duplica por JS para el loop) -->
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker__track" id="ticker">
+          <span class="ticker__item">🌿 Una ciudad con dos almas: naturaleza y cultura</span>
+          <span class="ticker__item">🌳 Las Yungas: una de las selvas más biodiversas de Argentina</span>
+          <span class="ticker__item">⛪ San Ramón de la Nueva Orán, extremo norte de Salta</span>
+          <span class="ticker__item">🏞️ La cruzan los ríos Blanco, Pescado y Bermejo</span>
+          <span class="ticker__item">💃 Fiestas patronales, folclore y carnaval</span>
+          <span class="ticker__item">🎉 Fundada el 31 de agosto de 1794</span>
+        </div>
       </div>
     </section>
 
@@ -67,10 +92,10 @@
       </header>
       <div class="cult-split" data-reveal>
         <figure class="cult-figure">
-          <img src="assets/img/cultura/iglesia-molinos.jpg"
-            alt="Iglesia colonial de adobe blanco con dos campanarios en los Valles Calchaquíes, Salta"
+          <img src="assets/img/cultura/plaza-pizarro.jpg"
+            alt="Plaza General Pizarro de Orán, con su fuente y arboleda"
             loading="lazy" decoding="async" />
-          <figcaption>Iglesias coloniales de adobe: la fe que llegó con la fundación.</figcaption>
+          <figcaption>La Plaza General Pizarro, corazón histórico de Orán.</figcaption>
         </figure>
         <div class="cult-text">
           <p>
@@ -119,8 +144,8 @@
         <a class="portal__card portal__card--cultural" href="cultural.html" data-reveal>
           <img src="assets/img/cultura/caporales.jpg" alt="" aria-hidden="true" loading="lazy" />
           <div class="portal__body">
-            <p class="portal__kicker">Raíces culturales</p>
-            <p class="portal__title">Raíces de Orán</p>
+            <p class="portal__kicker">Patrimonio cultural</p>
+            <p class="portal__title">Revista Cultural</p>
             <p class="portal__desc">
               Fiestas patronales, carnaval, folclore, danzas, celebraciones religiosas y la
               identidad viva del pueblo oranense.

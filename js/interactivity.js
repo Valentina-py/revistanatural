@@ -255,9 +255,13 @@ function initContacto() {
 function initTicker() {
   const track = document.getElementById('ticker');
   if (!track) return;
+  // Si la página trae sus propios ítems en el HTML, se usan esos (tema propio);
+  // si no, se usan las curiosidades del catálogo natural.
+  let base = Array.from(track.querySelectorAll('.ticker__item')).map((n) => n.textContent.trim());
+  if (base.length === 0) base = CURIOSIDADES;
+  track.innerHTML = '';
   // Duplicamos la lista para un loop continuo sin cortes.
-  const items = [...CURIOSIDADES, ...CURIOSIDADES];
-  for (const txt of items) {
+  for (const txt of [...base, ...base]) {
     track.append(el('span', { className: 'ticker__item', textContent: txt }));
   }
 }
