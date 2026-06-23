@@ -19,7 +19,7 @@ export const CIRCUITOS = [
     titulo: 'Circuito Náutico y de Aventura',
     rios: 'Río Bermejo · Río Pescado',
     emoji: '🛶',
-    img: 'assets/img/kayak.png',
+    img: 'assets/img/kayak.jpg',
     // categorías por las que se puede filtrar (data-filter)
     categorias: ['aventura', 'pesca'],
     etiqueta: 'Aventura Fluvial y Pesca',
