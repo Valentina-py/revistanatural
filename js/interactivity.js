@@ -1,3 +1,5 @@
+/*! Diseño y desarrollo web © 2026 Valentina Baudino. Todos los derechos reservados.
+    Prohibida la copia, distribución o reutilización del código sin autorización. */
 /* ============================================================================
    interactivity.js — Orquestador modular (ES6) de la revista.
    Responsabilidades:

@@ -1,3 +1,5 @@
+/*! Diseño y desarrollo web © 2026 Valentina Baudino. Todos los derechos reservados.
+    Prohibida la copia, distribución o reutilización del código sin autorización. */
 /* ============================================================================
    data.js — Fuente única de datos de la revista.
    Todo el contenido proviene EXCLUSIVAMENTE de los documentos de la carpeta

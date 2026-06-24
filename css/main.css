@@ -1,3 +1,5 @@
+/*! Diseño y desarrollo web © 2026 Valentina Baudino. Todos los derechos reservados.
+    Prohibida la copia, distribución o reutilización del código sin autorización. */
 /* ============================================================================
    main.css — Revista interactiva "Orán Natural"
    Maquetación editorial / revista independiente.
@@ -973,6 +975,12 @@ h1, h2, h3, p, a, li, blockquote { overflow-wrap: break-word; }
   opacity: 0.7;
   margin: 0;
 }
+.footer__copy {
+  grid-column: 1 / -1;
+  margin: 0; font-size: 0.74rem;
+  color: color-mix(in srgb, var(--crema) 55%, transparent);
+}
+.footer__copy strong { color: color-mix(in srgb, var(--crema) 80%, transparent); }
 
 /* ============================== 13. RESPONSIVE ============================== */
 @media (max-width: 1024px) {
