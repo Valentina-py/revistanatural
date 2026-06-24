@@ -937,6 +937,34 @@ h1, h2, h3, p, a, li, blockquote { overflow-wrap: break-word; }
 }
 .footer__inst-text strong { color: var(--verde-lima); font-size: 1.05rem; }
 
+/* Crédito de autoría: se resalta la Tecnicatura; el instituto va pequeño */
+.footer__credit { text-align: center; }
+.footer__made {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(1.1rem, 2.6vw, 1.5rem); line-height: 1.2; margin: 0;
+  color: var(--crema);
+}
+.footer__made strong { color: var(--verde-lima); }
+.tema-cultural .footer__made strong { color: var(--dorado); }
+.footer__made-year {
+  font-family: var(--font-display); font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; font-size: 0.82rem; color: var(--dorado);
+  margin: 0.2rem 0 0.6rem;
+}
+.footer__inst-small {
+  margin: 0; font-size: 0.74rem; line-height: 1.4;
+  color: color-mix(in srgb, var(--crema) 60%, transparent);
+}
+
+/* Nota de aclaración (sitio no oficial) en la tarjeta de contacto */
+.info-card__nota {
+  margin-top: 0.9rem; padding: 0.6rem 0.8rem;
+  background: color-mix(in srgb, var(--dorado) 16%, transparent);
+  border-left: 3px solid var(--dorado);
+  border-radius: 0 10px 10px 0;
+  font-size: 0.82rem; line-height: 1.45; color: var(--tinta-suave);
+}
+
 .footer__legal {
   grid-column: 1 / -1;
   border-top: 1px solid color-mix(in srgb, var(--crema) 20%, transparent);
