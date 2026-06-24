@@ -925,6 +925,19 @@ function initBotanigrama() {
   });
 }
 
+/* ===================== 12. BOTÓN "VOLVER ARRIBA" ===================== */
+function initBackToTop() {
+  const btn = document.getElementById('to-top');
+  if (!btn) return;
+  const toggle = () => btn.classList.toggle('is-visible', window.scrollY > 600);
+  window.addEventListener('scroll', toggle, { passive: true });
+  toggle();
+  btn.addEventListener('click', () => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+  });
+}
+
 /* ============================ ARRANQUE ============================ */
 function init() {
   initSumario();
@@ -941,6 +954,7 @@ function init() {
   initDiferencias();
   initBotanigrama();
   initNav();
+  initBackToTop();
   initPrint();
   // Los efectos de scroll se enganchan tras poblar el DOM.
   initScrollReveal();
