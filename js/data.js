@@ -244,6 +244,7 @@ export const FLORA = [
   { nombre: 'Lapacho blanco',  cientifico: 'Tabebuia roseoalba',         habito: 'Árbol', emoji: '🤍', img: 'assets/img/arboles/lapacho-blanco.jpg',  uso: 'Madera para carpintería; ornamental por sus flores blancas; menos frecuente que los otros lapachos.' },
   { nombre: 'Tipa blanca',     cientifico: 'Tipuana tipu',               habito: 'Árbol', emoji: '🌳', img: 'assets/img/arboles/tipa.jpg',           uso: 'Árbol de sombra y ornamental; madera para muebles y especie melífera.' },
   { nombre: 'Palo blanco',     cientifico: 'Calycophyllum multiflorum',  habito: 'Árbol', emoji: '🌲', img: 'assets/img/arboles/palo-blanco.jpg',     uso: 'Madera valiosa para carpintería; árbol característico de la transición de las Yungas.' },
+  { nombre: 'Tarco (Jacarandá)', cientifico: 'Jacaranda mimosifolia',    habito: 'Árbol', emoji: '💜', img: 'assets/img/arboles/tarco.jpg',          uso: 'Ornamental y emblemático del norte; su floración violeta tiñe las Yungas en primavera. Madera liviana para carpintería.' },
 ];
 
 /* ----------------------------------------------------------------------------
