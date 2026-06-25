@@ -1,4 +1,4 @@
-/*! Diseño y desarrollo web © 2026 Valentina Baudino. Todos los derechos reservados.
+/*! Diseño y desarrollo web © 2026 Nahara Baudino. Todos los derechos reservados.
     Prohibida la copia, distribución o reutilización del código sin autorización. */
 /* ============================================================================
    interactivity.js — Orquestador modular (ES6) de la revista.
@@ -11,7 +11,7 @@
    ========================================================================== */
 
 import {
-  CIRCUITOS, FILTROS, FAUNA, FLORA, CONSERVACION, CONTACTO, CURIOSIDADES,
+  CIRCUITOS, FILTROS, FAUNA, FLORA, CONSERVACION, CURIOSIDADES,
   SUMARIO, QUIZ, SABIAS, SOPA_PALABRAS,
 } from './data.js';
 
@@ -238,19 +238,6 @@ function initConservacion() {
     frag.append(item);
   }
   cont.append(frag);
-}
-
-/* ============================ 5. CONTACTO (footer) ============================ */
-function initContacto() {
-  const cont = document.getElementById('bloque-contacto');
-  if (!cont) return;
-
-  cont.append(
-    el('h3', { textContent: CONTACTO.oficina }),
-    el('p', { textContent: CONTACTO.direccion }),
-    el('p', {}, [el('a', { href: `mailto:${CONTACTO.email}`, textContent: CONTACTO.email })]),
-    el('p', {}, [el('a', { href: `tel:${CONTACTO.telefono.replace(/\s/g, '')}`, textContent: CONTACTO.telefono })]),
-  );
 }
 
 /* ============================ 5b. TICKER DE CURIOSIDADES ============================ */
@@ -940,6 +927,107 @@ function initBackToTop() {
   });
 }
 
+/* ===================== 13. REPRODUCTOR DE MÚSICA (botones por tema) ===================== */
+function initReproductor() {
+  const audio = document.getElementById('audio-player');
+  const temas = Array.from(document.querySelectorAll('.tema'));
+  if (!audio || temas.length === 0) return;
+
+  let actual = null;
+  const icono = (t) => t.querySelector('.tema__icono');
+  const reset = () => temas.forEach((t) => { t.classList.remove('is-playing'); icono(t).textContent = '▶'; });
+
+  temas.forEach((t) => {
+    t.addEventListener('click', () => {
+      // Mismo tema sonando → pausa; mismo tema pausado → reanuda
+      if (actual === t) {
+        if (audio.paused) { audio.play().catch(() => {}); t.classList.add('is-playing'); icono(t).textContent = '⏸'; }
+        else { audio.pause(); t.classList.remove('is-playing'); icono(t).textContent = '▶'; }
+        return;
+      }
+      // Tema nuevo → reemplaza al anterior
+      reset();
+      audio.src = t.dataset.src;
+      audio.play().catch(() => {});
+      actual = t;
+      t.classList.add('is-playing');
+      icono(t).textContent = '⏸';
+    });
+  });
+
+  audio.addEventListener('ended', () => { reset(); actual = null; });
+}
+
+/* ===================== 14. CARRUSEL DE FOTOS (galería deslizable) ===================== */
+function initCarrusel() {
+  const carruseles = document.querySelectorAll('.carrusel');
+  if (carruseles.length === 0) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  carruseles.forEach((car) => {
+    const track = car.querySelector('.carrusel__track');
+    const slides = Array.from(car.querySelectorAll('.carrusel__slide'));
+    const dotsWrap = car.querySelector('.carrusel__dots');
+    if (!track || slides.length === 0) return;
+
+    let i = 0, timer = null;
+    const dots = slides.map((_, k) => {
+      const d = el('button', { type: 'button', className: 'carrusel__dot' });
+      d.setAttribute('aria-label', `Ir a la foto ${k + 1}`);
+      d.addEventListener('click', () => { go(k); restart(); });
+      if (dotsWrap) dotsWrap.append(d);
+      return d;
+    });
+
+    const go = (n) => {
+      i = (n + slides.length) % slides.length;
+      track.style.transform = `translateX(-${i * 100}%)`;
+      dots.forEach((d, k) => d.classList.toggle('is-active', k === i));
+    };
+    const restart = () => {
+      if (reduce) return;
+      clearInterval(timer);
+      timer = setInterval(() => go(i + 1), 5000);
+    };
+
+    car.querySelector('.carrusel__prev')?.addEventListener('click', () => { go(i - 1); restart(); });
+    car.querySelector('.carrusel__next')?.addEventListener('click', () => { go(i + 1); restart(); });
+
+    // Deslizar con el dedo / mouse
+    let x0 = null;
+    track.addEventListener('pointerdown', (e) => { x0 = e.clientX; });
+    track.addEventListener('pointerup', (e) => {
+      if (x0 === null) return;
+      const dx = e.clientX - x0;
+      if (dx > 40) { go(i - 1); restart(); } else if (dx < -40) { go(i + 1); restart(); }
+      x0 = null;
+    });
+
+    car.addEventListener('mouseenter', () => clearInterval(timer));
+    car.addEventListener('mouseleave', restart);
+
+    go(0); restart();
+  });
+}
+
+/* ============ 15. GALERÍA POR CHIPS (tocar un chip muestra su foto) ============ */
+function initGaleriaChips() {
+  document.querySelectorAll('.galeria-chips').forEach((g) => {
+    const chips = Array.from(g.querySelectorAll('.gchip'));
+    const img = g.querySelector('.gchip-img');
+    const cap = g.querySelector('.gchip-cap');
+    if (chips.length === 0 || !img) return;
+    chips.forEach((c) => {
+      c.addEventListener('click', () => {
+        chips.forEach((x) => x.classList.toggle('is-active', x === c));
+        img.src = c.dataset.img;
+        img.alt = c.dataset.cap || '';
+        if (cap) cap.textContent = c.dataset.cap || '';
+      });
+    });
+  });
+}
+
 /* ============================ ARRANQUE ============================ */
 function init() {
   initSumario();
@@ -947,7 +1035,6 @@ function init() {
   initFlora();
   initCircuitos();
   initConservacion();
-  initContacto();
   initTicker();
   initCountUp();
   initQuiz();
@@ -955,6 +1042,9 @@ function init() {
   initColorear();
   initDiferencias();
   initBotanigrama();
+  initReproductor();
+  initCarrusel();
+  initGaleriaChips();
   initNav();
   initBackToTop();
   initPrint();

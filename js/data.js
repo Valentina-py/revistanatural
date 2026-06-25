@@ -1,4 +1,4 @@
-/*! Diseño y desarrollo web © 2026 Valentina Baudino. Todos los derechos reservados.
+/*! Diseño y desarrollo web © 2026 Nahara Baudino. Todos los derechos reservados.
     Prohibida la copia, distribución o reutilización del código sin autorización. */
 /* ============================================================================
    data.js — Fuente única de datos de la revista.
@@ -239,6 +239,11 @@ export const FLORA = [
   { nombre: 'Pacará',        cientifico: 'Enterolobium contortisiliquum',   habito: 'Árbol', emoji: '🌳', img: 'assets/img/arboles/pacara.jpg', uso: 'Construcción, instrumentos musicales y ornamental.' },
   { nombre: 'Pino del cerro',cientifico: 'Podocarpus parlatorei',           habito: 'Árbol', emoji: '🌲', img: 'assets/img/arboles/pino.jpg',   uso: 'Construcción, alimenticia y tintórea.' },
   { nombre: 'Roble',         cientifico: 'Amburana cearensis',              habito: 'Árbol', emoji: '🍃', img: 'assets/img/arboles/roble.jpg',  uso: 'Medicinal: corteza para afecciones cardíacas y renales.' },
+  { nombre: 'Lapacho rosado',  cientifico: 'Handroanthus impetiginosus', habito: 'Árbol', emoji: '🌸', img: 'assets/img/arboles/lapacho-rosado.jpg',  uso: 'Madera muy dura para construcción y muebles; su floración rosada es un emblema del norte.' },
+  { nombre: 'Lapacho amarillo', cientifico: 'Handroanthus ochraceus',    habito: 'Árbol', emoji: '🌼', img: 'assets/img/arboles/lapacho-amarillo.jpg', uso: 'Madera resistente y ornamental; tiñe de amarillo las Yungas en plena floración.' },
+  { nombre: 'Lapacho blanco',  cientifico: 'Tabebuia roseoalba',         habito: 'Árbol', emoji: '🤍', img: 'assets/img/arboles/lapacho-blanco.jpg',  uso: 'Madera para carpintería; ornamental por sus flores blancas; menos frecuente que los otros lapachos.' },
+  { nombre: 'Tipa blanca',     cientifico: 'Tipuana tipu',               habito: 'Árbol', emoji: '🌳', img: 'assets/img/arboles/tipa.jpg',           uso: 'Árbol de sombra y ornamental; madera para muebles y especie melífera.' },
+  { nombre: 'Palo blanco',     cientifico: 'Calycophyllum multiflorum',  habito: 'Árbol', emoji: '🌲', img: 'assets/img/arboles/palo-blanco.jpg',     uso: 'Madera valiosa para carpintería; árbol característico de la transición de las Yungas.' },
 ];
 
 /* ----------------------------------------------------------------------------
@@ -253,17 +258,6 @@ export const CONSERVACION = [
   { icono: '🥾', titulo: 'Turismo sostenible', texto: 'Respetá los senderos y no dejes rastro de tu paso.' },
   { icono: '📣', titulo: 'Participá y educá', texto: 'Sumate a jornadas de limpieza, plantación y educación ambiental.' },
 ];
-
-/* ----------------------------------------------------------------------------
-   CONTACTO OFICIAL
-   Fuente: "RIOS DE ORÁN" → Registro de Prestadores de Turismo de Orán.
----------------------------------------------------------------------------- */
-export const CONTACTO = {
-  oficina: 'Gerencia de Turismo de Orán',
-  direccion: 'Hipólito Yrigoyen 141, San Ramón de la Nueva Orán, Salta',
-  email: 'gerenciaturaismooran@gmail.com',
-  telefono: '+54 3878 35-8491',
-};
 
 /* ===================== ÍNDICE / SUMARIO de la revista ===================== */
 /* Cada entrada lista una sección con su número, nombre, micro-descripción y
